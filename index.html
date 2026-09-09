@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Ancient Rome — تجربة رقمية سينمائية لاستكشاف الحضارة الرومانية القديمة.">
+<meta name="theme-color" content="#171411">
+<title>ROME — الحضارة الرومانية القديمة</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+ --bg:#11100e;
+ --bg-soft:#191714;
+ --panel:#211e1a;
+ --panel-2:#29241e;
+ --text:#eee7d7;
+ --muted:#a79d8b;
+ --gold:#b89555;
+ --gold-light:#d5b979;
+ --bronze:#815e38;
+ --red:#762f2b;
+ --red-light:#a94d43;
+ --line:rgba(213,185,121,.22);
+ --shadow:0 25px 70px rgba(0,0,0,.35);
+ --serif:"Cormorant Garamond",Georgia,serif;
+ --display:"Cinzel",Georgia,serif;
+ --sans:"Inter",Arial,sans-serif;
+ --radius:18px;
+}
+body.light{
+ --bg:#eee9df;
+ --bg-soft:#e6dfd2;
+ --panel:#f8f4eb;
+ --panel-2:#e9e1d2;
+ --text:#25211b;
+ --muted:#6f6658;
+ --gold:#8e6a32;
+ --gold-light:#a9823d;
+ --bronze:#74542d;
+ --red:#702b27;
+ --red-light:#933b34;
+ --line:rgba(100,73,34,.22);
+ --shadow:0 25px 70px rgba(60,43,22,.14);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+ margin:0;
+ background:var(--bg);
+ color:var(--text);
+ font-family:var(--sans);
+ overflow-x:hidden;
+ transition:background .5s,color .5s;
+}
+body::before{
+ content:"";
+ position:fixed;
+ inset:0;
+ pointer-events:none;
+ z-index:999;
+ opacity:.055;
+ background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");
+}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit}
+button{cursor:pointer}
+img{max-width:100%;display:block}
+::selection{background:var(--gold);color:#111}
+:focus-visible{outline:2px solid var(--gold-light);outline-offset:4px}
+.skip{position:fixed;top:-100px;right:20px;background:var(--gold);color:#111;padding:12px 18px;z-index:10000}
+.skip:focus{top:20px}
+
+.preloader{
+ position:fixed;inset:0;background:#0d0c0a;z-index:10000;
+ display:grid;place-items:center;transition:opacity .8s,visibility .8s;
+}
+.preloader.done{opacity:0;visibility:hidden}
+.preloader-inner{text-align:center}
+.laurel{
+ width:86px;height:86px;border:1px solid #b89555;border-radius:50%;
+ display:grid;place-items:center;margin:auto auto 24px;
+ animation:spin 4s linear infinite;
+}
+.laurel span{font-family:var(--display);font-size:26px;color:#d5b979}
+.preloader p{font-family:var(--display);letter-spacing:.2em;color:#b89555;font-size:11px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.progress{
+ position:fixed;top:0;right:0;height:3px;background:var(--gold-light);z-index:1001;width:0;
+}
+header{
+ position:fixed;top:0;right:0;left:0;height:78px;z-index:900;
+ display:flex;align-items:center;justify-content:space-between;padding:0 4vw;
+ background:linear-gradient(180deg,rgba(10,9,8,.82),transparent);
+ transition:.35s;
+}
+header.scrolled{
+ background:rgba(15,13,11,.9);backdrop-filter:blur(16px);
+ border-bottom:1px solid var(--line);
+}
+body.light header.scrolled{background:rgba(245,240,231,.92)}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-mark{
+ width:39px;height:39px;border:1px solid var(--gold);display:grid;place-items:center;
+ transform:rotate(45deg);
+}
+.brand-mark span{transform:rotate(-45deg);font-family:var(--display);color:var(--gold-light)}
+.brand-text{font-family:var(--display);font-size:16px;letter-spacing:.15em}
+.nav-desktop{display:flex;gap:24px;align-items:center}
+.nav-desktop a{
+ font-size:10px;letter-spacing:.1em;color:#d4c8b5;position:relative;
+}
+body.light .nav-desktop a{color:#40392f}
+.nav-desktop a::after{
+ content:"";position:absolute;bottom:-9px;right:0;width:0;height:1px;background:var(--gold-light);transition:.3s
+}
+.nav-desktop a:hover::after{width:100%}
+.header-actions{display:flex;gap:8px}
+.icon-btn{
+ width:40px;height:40px;border:1px solid var(--line);background:rgba(255,255,255,.04);
+ color:var(--text);display:grid;place-items:center;border-radius:50%;
+}
+.menu-btn{display:none}
+.hero{
+ min-height:100svh;position:relative;display:flex;align-items:center;
+ overflow:hidden;background:#100e0c;
+}
+.hero-art{
+ position:absolute;inset:0;
+ background:
+ radial-gradient(circle at 72% 45%,rgba(193,146,75,.22),transparent 25%),
+ radial-gradient(circle at 30% 80%,rgba(118,47,43,.2),transparent 30%),
+ linear-gradient(110deg,#0d0c0a 0%,rgba(13,12,10,.35) 48%,#11100e 100%);
+}
+.columns{
+ position:absolute;inset:0;opacity:.38;
+ background:
+ linear-gradient(90deg,transparent 9%,rgba(218,196,157,.12) 9.5%,transparent 10.5%,transparent 89%,rgba(218,196,157,.12) 89.5%,transparent 90.5%);
+}
+.columns::before,.columns::after{
+ content:"";position:absolute;top:10%;width:12%;height:100%;
+ border:10px solid rgba(218,196,157,.13);border-bottom:0;
+}
+.columns::before{right:8%;box-shadow:inset 0 0 30px rgba(255,210,130,.08)}
+.columns::after{left:8%}
+.hero-sun{
+ position:absolute;width:48vw;height:48vw;max-width:650px;max-height:650px;
+ border-radius:50%;right:8%;top:12%;
+ background:radial-gradient(circle,rgba(224,190,117,.27),rgba(224,190,117,.04) 42%,transparent 70%);
+ filter:blur(3px);animation:pulse 7s ease-in-out infinite;
+}
+@keyframes pulse{50%{transform:scale(1.08);opacity:.75}}
+.hero-content{
+ position:relative;z-index:2;width:min(1200px,90%);margin:auto;padding-top:80px;
+}
+.eyebrow{
+ display:flex;align-items:center;gap:12px;color:var(--gold-light);
+ font-size:11px;letter-spacing:.24em;text-transform:uppercase;margin-bottom:24px;
+}
+.eyebrow::before{content:"";width:50px;height:1px;background:var(--gold)}
+.hero h1{
+ font-family:var(--display);font-weight:500;line-height:.94;
+ font-size:clamp(48px,9vw,132px);letter-spacing:-.04em;max-width:950px;margin:0;
+}
+.hero h1 em{
+ color:transparent;-webkit-text-stroke:1px var(--gold-light);font-style:normal;
+}
+.hero-copy{max-width:560px;color:#c5b9a4;line-height:1.9;font-family:var(--serif);font-size:20px;margin:30px 0}
+body.light .hero-copy{color:#ddd3c1}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.btn{
+ border:1px solid var(--gold);background:var(--gold);color:#15120e;
+ min-height:48px;padding:0 24px;display:inline-flex;align-items:center;justify-content:center;
+ gap:10px;font-family:var(--display);font-size:11px;letter-spacing:.12em;transition:.3s;
+}
+.btn:hover{transform:translateY(-3px);background:var(--gold-light);box-shadow:0 12px 30px rgba(184,149,85,.2)}
+.btn.secondary{background:transparent;color:var(--text);border-color:var(--line)}
+.hero-meta{
+ position:absolute;bottom:32px;right:5%;left:5%;display:flex;justify-content:space-between;
+ align-items:end;color:#9f947f;font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+}
+.scroll-line{display:flex;align-items:center;gap:10px}.scroll-line span{width:50px;height:1px;background:var(--gold)}
+.hero-stat{display:flex;gap:30px}.hero-stat strong{display:block;font-family:var(--display);font-size:20px;color:var(--gold-light)}
+
+.section{padding:120px 5%;position:relative}
+.section.dark{background:var(--bg-soft)}
+.section-head{max-width:1000px;margin:0 auto 60px;text-align:center}
+.kicker{color:var(--gold);font-size:10px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:15px}
+.section-title{font-family:var(--display);font-size:clamp(34px,5vw,72px);font-weight:500;line-height:1.05;margin:0 0 20px}
+.section-lead{color:var(--muted);font-family:var(--serif);font-size:20px;line-height:1.7;max-width:720px;margin:auto}
+
+.birth{
+ display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;
+ max-width:1200px;margin:auto;
+}
+.stone-frame{
+ min-height:520px;position:relative;border:1px solid var(--line);
+ background:
+ radial-gradient(circle at 60% 35%,rgba(184,149,85,.18),transparent 20%),
+ linear-gradient(145deg,#302920,#15130f);
+ overflow:hidden;
+}
+body.light .stone-frame{background:linear-gradient(145deg,#ded5c3,#f4efe5)}
+.stone-frame::before{
+ content:"ROMA";position:absolute;inset:auto 0 20px;text-align:center;
+ font-family:var(--display);font-size:90px;color:rgba(213,185,121,.08);letter-spacing:.15em;
+}
+.statue{
+ position:absolute;bottom:-30px;left:50%;transform:translateX(-50%);
+ width:55%;height:80%;border-radius:50% 50% 12% 12%;
+ background:linear-gradient(90deg,#6b6356,#e1d6c2 45%,#827968);
+ filter:drop-shadow(20px 15px 25px rgba(0,0,0,.35));
+}
+.statue::before{
+ content:"";position:absolute;width:34%;height:25%;border-radius:50%;
+ background:linear-gradient(90deg,#716758,#e5dac7,#8e8474);top:-13%;left:33%;
+}
+.stone-label{
+ position:absolute;top:25px;right:25px;font-family:var(--display);
+ font-size:11px;color:var(--gold-light);letter-spacing:.16em;
+}
+.birth-text h3{font-family:var(--display);font-size:34px;font-weight:500;margin:0 0 20px}
+.birth-text p{font-family:var(--serif);font-size:19px;line-height:1.85;color:var(--muted)}
+.fact-list{display:grid;gap:12px;margin-top:28px}
+.fact{display:flex;gap:15px;padding:15px 0;border-top:1px solid var(--line)}
+.fact b{font-family:var(--display);color:var(--gold);font-size:13px;min-width:75px}
+
+.timeline-wrap{max-width:1250px;margin:auto}
+.timeline-nav{
+ display:flex;gap:10px;overflow-x:auto;padding-bottom:20px;margin-bottom:35px;
+ scrollbar-width:thin;
+}
+.timeline-nav button{
+ flex:0 0 auto;background:transparent;color:var(--muted);border:1px solid var(--line);
+ padding:12px 16px;font-family:var(--display);font-size:10px;white-space:nowrap;transition:.25s;
+}
+.timeline-nav button.active,.timeline-nav button:hover{background:var(--gold);color:#17130e;border-color:var(--gold)}
+.timeline-panel{
+ min-height:420px;border:1px solid var(--line);display:grid;grid-template-columns:1.05fr 1fr;
+ background:var(--panel);overflow:hidden;
+}
+.timeline-visual{
+ position:relative;padding:45px;background:
+ radial-gradient(circle at 50% 45%,rgba(184,149,85,.2),transparent 25%),
+ linear-gradient(135deg,#2a231b,#12100e);
+}
+.timeline-year{font-family:var(--display);font-size:clamp(50px,8vw,100px);color:var(--gold-light);line-height:1}
+.timeline-symbol{font-family:var(--display);font-size:140px;color:rgba(213,185,121,.1);position:absolute;bottom:15px;left:30px}
+.timeline-content{padding:50px}
+.timeline-content h3{font-family:var(--display);font-size:36px;font-weight:500;margin:0 0 15px}
+.timeline-content p{color:var(--muted);line-height:1.9;font-family:var(--serif);font-size:19px}
+.timeline-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:25px}
+.tag{border:1px solid var(--line);padding:7px 10px;color:var(--gold-light);font-size:9px}
+
+.map-shell{
+ max-width:1200px;margin:auto;border:1px solid var(--line);background:var(--panel);
+ overflow:hidden;
+}
+.map-toolbar{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap}
+.map-toolbar button{
+ background:transparent;border:1px solid var(--line);color:var(--muted);padding:10px 15px;font-size:10px;
+}
+.map-toolbar button.active{background:var(--red);border-color:var(--red);color:#fff}
+.map-stage{
+ min-height:570px;position:relative;
+ background:
+ radial-gradient(circle at 42% 48%,rgba(184,149,85,.13),transparent 32%),
+ linear-gradient(145deg,#14120f,#242018);
+ overflow:hidden;
+}
+.map-stage::before{
+ content:"";position:absolute;inset:0;opacity:.15;
+ background-image:linear-gradient(rgba(213,185,121,.3) 1px,transparent 1px),linear-gradient(90deg,rgba(213,185,121,.3) 1px,transparent 1px);
+ background-size:55px 55px;transform:perspective(600px) rotateX(55deg) scale(1.5);
+}
+.map-land{
+ position:absolute;inset:15% 12% 13% 15%;
+ background:#4a4439;clip-path:polygon(4% 30%,13% 17%,28% 21%,37% 9%,51% 16%,62% 5%,74% 17%,87% 14%,96% 30%,91% 46%,98% 57%,85% 66%,77% 83%,61% 76%,52% 91%,39% 79%,26% 88%,18% 72%,5% 66%,11% 51%,1% 44%);
+ box-shadow:0 0 60px rgba(0,0,0,.4);
+}
+.map-land::after{
+ content:"ROMAN MARE NOSTRUM";position:absolute;inset:0;display:grid;place-items:center;
+ color:rgba(210,195,165,.2);font-family:var(--display);font-size:clamp(16px,3vw,35px);letter-spacing:.15em;
+}
+.region{
+ position:absolute;border:1px solid rgba(213,185,121,.5);background:rgba(184,149,85,.18);
+ padding:9px 11px;color:#eee2c9;font-family:var(--display);font-size:9px;z-index:2;
+ transition:.3s;cursor:pointer;
+}
+.region:hover,.region.selected{background:var(--gold);color:#17130e;transform:scale(1.07)}
+.r-italia{right:48%;top:48%}.r-gaul{right:54%;top:33%}.r-hispania{right:67%;top:56%}
+.r-britannia{right:58%;top:19%}.r-egypt{left:31%;top:66%}.r-africa{right:40%;top:66%}
+.r-greece{left:43%;top:48%}.r-syria{left:24%;top:43%}.r-dacia{left:43%;top:32%}
+.map-info{
+ position:absolute;bottom:22px;right:22px;max-width:340px;padding:20px;
+ background:rgba(16,14,12,.88);backdrop-filter:blur(12px);border:1px solid var(--line);z-index:3;
+}
+.map-info h3{font-family:var(--display);margin:0 0 8px;color:var(--gold-light)}
+.map-info p{margin:0;color:#b8ad9a;font-family:var(--serif);line-height:1.6;font-size:16px}
+
+.cards-grid{
+ max-width:1250px;margin:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+}
+.card{
+ border:1px solid var(--line);background:var(--panel);padding:25px;position:relative;
+ min-height:250px;overflow:hidden;transition:.35s;cursor:pointer;
+}
+.card:hover{transform:translateY(-7px);border-color:rgba(213,185,121,.55);box-shadow:var(--shadow)}
+.card-number{font-family:var(--display);font-size:11px;color:var(--gold);letter-spacing:.1em}
+.card h3{font-family:var(--display);font-size:23px;font-weight:500;margin:35px 0 10px}
+.card p{color:var(--muted);line-height:1.65;font-family:var(--serif);font-size:16px}
+.card-symbol{position:absolute;left:-10px;bottom:-30px;font-family:var(--display);font-size:110px;color:rgba(184,149,85,.055)}
+.emperor-card{min-height:320px;display:flex;flex-direction:column;justify-content:end}
+.emperor-card .portrait{
+ position:absolute;inset:0 0 auto;height:190px;
+ background:linear-gradient(145deg,#3b3328,#171411);overflow:hidden;
+}
+.portrait::before{
+ content:"";position:absolute;width:100px;height:125px;border-radius:48% 48% 42% 42%;
+ background:linear-gradient(90deg,#766b59,#ddd0bb 50%,#746958);
+ left:50%;top:28px;transform:translateX(-50%);
+}
+.portrait::after{
+ content:"";position:absolute;width:120px;height:35px;border-radius:50%;
+ border-top:14px solid #40382e;left:50%;top:16px;transform:translateX(-50%);
+}
+.emperor-card .card-body{position:relative;z-index:2}
+.emperor-card h3{margin-top:12px}
+.reign{color:var(--gold);font-size:10px;letter-spacing:.1em}
+
+.feature{
+ max-width:1250px;margin:auto;display:grid;grid-template-columns:1fr 1fr;min-height:620px;
+ border:1px solid var(--line);background:var(--panel);
+}
+.feature-visual{
+ min-height:500px;position:relative;overflow:hidden;
+ background:
+ radial-gradient(circle at 50% 42%,rgba(212,182,113,.22),transparent 24%),
+ linear-gradient(160deg,#32281d,#100f0d);
+}
+.colosseum{
+ position:absolute;left:10%;right:10%;bottom:10%;height:62%;
+ border:20px solid #8e8069;border-bottom-width:28px;border-radius:50% 50% 3% 3%;
+ box-shadow:inset 0 0 0 12px #51493d,0 20px 50px rgba(0,0,0,.4);
+}
+.colosseum::before{
+ content:"";position:absolute;inset:15% 7%;border:9px solid #b0a38c;
+ border-top-color:transparent;border-bottom-color:transparent;border-radius:50%;
+}
+.colosseum::after{
+ content:"";position:absolute;left:0;right:0;bottom:-28px;height:15px;background:#544b3d;
+}
+.feature-content{padding:55px}
+.feature-content h3{font-family:var(--display);font-size:clamp(30px,4vw,54px);font-weight:500;margin:0 0 20px}
+.feature-content p{color:var(--muted);font-family:var(--serif);font-size:19px;line-height:1.85}
+.arch-facts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:30px}
+.arch-fact{padding:15px;border-top:1px solid var(--line)}
+.arch-fact strong{font-family:var(--display);display:block;color:var(--gold-light);font-size:20px}
+.arch-fact span{font-size:10px;color:var(--muted)}
+
+.explorer{
+ max-width:1200px;margin:auto;
+}
+.search-box{position:relative;margin-bottom:25px}
+.search-box input{
+ width:100%;height:58px;background:var(--panel);border:1px solid var(--line);
+ color:var(--text);padding:0 22px;font-size:16px;outline:none;
+}
+.search-box input:focus{border-color:var(--gold)}
+.filter-row{display:flex;gap:8px;overflow:auto;padding-bottom:20px}
+.filter{
+ white-space:nowrap;padding:9px 13px;background:transparent;border:1px solid var(--line);
+ color:var(--muted);font-size:10px;
+}
+.filter.active{color:#17130e;background:var(--gold)}
+.explorer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.explorer-item{min-height:180px}
+
+.wars-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1250px;margin:auto}
+.war-card{border:1px solid var(--line);background:var(--panel);padding:30px;min-height:330px}
+.war-card .year{font-family:var(--display);font-size:13px;color:var(--gold)}
+.war-card h3{font-family:var(--display);font-size:27px;font-weight:500}
+.war-card p{color:var(--muted);font-family:var(--serif);line-height:1.7}
+.war-result{border-top:1px solid var(--line);padding-top:16px;color:var(--gold-light);font-size:11px}
+
+.life-grid{max-width:1250px;margin:auto;display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.life-card{min-height:210px;border:1px solid var(--line);padding:20px;background:var(--panel);transition:.3s}
+.life-card:hover{background:var(--panel-2);transform:translateY(-4px)}
+.life-icon{font-family:var(--display);font-size:30px;color:var(--gold)}
+.life-card h3{font-family:var(--display);font-size:17px}
+.life-card p{font-family:var(--serif);font-size:15px;line-height:1.55;color:var(--muted)}
+
+.gods{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;max-width:1200px;margin:auto}
+.god{
+ aspect-ratio:1/1.25;border:1px solid var(--line);background:linear-gradient(160deg,#332b21,#171411);
+ padding:22px;display:flex;flex-direction:column;justify-content:end;position:relative;overflow:hidden;cursor:pointer;
+}
+.god::before{content:"";position:absolute;width:130px;height:170px;left:50%;top:12%;transform:translateX(-50%);
+ border-radius:50% 50% 35% 35%;background:linear-gradient(90deg,#665c4c,#d8ccb7 48%,#6f6554);opacity:.55}
+.god .symbol{position:absolute;top:18px;right:18px;color:var(--gold);font-family:var(--display);font-size:20px}
+.god h3{font-family:var(--display);font-size:19px;position:relative;margin:0}
+.god p{color:#b8ad9a;font-size:11px;position:relative;margin:5px 0 0}
+
+.caesar{
+ min-height:700px;display:flex;align-items:center;position:relative;overflow:hidden;
+ background:
+ radial-gradient(circle at 70% 50%,rgba(132,50,43,.26),transparent 35%),
+ linear-gradient(110deg,#0f0d0b,#291914);
+}
+.caesar::after{
+ content:"CAESAR";position:absolute;left:-3vw;bottom:-30px;font-family:var(--display);
+ font-size:clamp(100px,20vw,290px);color:rgba(255,255,255,.025);pointer-events:none;
+}
+.caesar-inner{max-width:1200px;width:90%;margin:auto;position:relative;z-index:2}
+.caesar h2{font-family:var(--display);font-size:clamp(45px,8vw,110px);font-weight:500;margin:0}
+.caesar p{max-width:570px;font-family:var(--serif);font-size:21px;line-height:1.8;color:#c0b4a0}
+.caesar-path{display:flex;gap:0;margin-top:45px;max-width:900px}
+.caesar-step{flex:1;border-top:1px solid var(--gold);padding:18px 10px 0;position:relative}
+.caesar-step::before{content:"";position:absolute;top:-4px;right:0;width:7px;height:7px;border-radius:50%;background:var(--gold)}
+.caesar-step strong{font-family:var(--display);font-size:11px;display:block;color:var(--gold-light)}
+.caesar-step span{font-size:10px;color:#918674}
+
+.legion-layout{max-width:1200px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+.soldier{
+ height:590px;border:1px solid var(--line);background:linear-gradient(145deg,#302920,#12100e);
+ position:relative;display:grid;place-items:center;overflow:hidden;
+}
+.soldier-body{height:72%;width:38%;background:linear-gradient(90deg,#463b2f,#a58d67 45%,#514332);border-radius:35% 35% 12% 12%;position:relative}
+.soldier-body::before{content:"";position:absolute;width:62%;height:18%;top:-7%;left:19%;background:#7f6d51;border-radius:50%;box-shadow:0 -15px 0 #423a2e}
+.sword{position:absolute;width:13px;height:270px;background:#bbb3a2;right:28%;top:35%;transform:rotate(8deg)}
+.sword::after{content:"";position:absolute;bottom:-25px;left:-10px;width:34px;height:20px;background:#7a5530}
+.shield{position:absolute;width:125px;height:170px;border-radius:48%;background:#8b3b31;border:13px solid #9e875d;left:21%;top:38%;box-shadow:inset 0 0 0 6px #4f3a27}
+.legion-copy h3{font-family:var(--display);font-size:50px;font-weight:500}
+.legion-copy p{font-family:var(--serif);font-size:20px;line-height:1.8;color:var(--muted)}
+.equipment{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:30px}
+.equipment button{text-align:right;background:var(--panel);border:1px solid var(--line);color:var(--text);padding:15px}
+.equipment button:hover{border-color:var(--gold)}
+
+.pompeii{
+ max-width:1250px;margin:auto;display:grid;grid-template-columns:1fr 1fr;min-height:580px;
+}
+.pompeii-visual{background:linear-gradient(145deg,#59372a,#18120f);position:relative;overflow:hidden}
+.pompeii-visual::before{content:"POMPEII";position:absolute;inset:0;display:grid;place-items:center;
+ font-family:var(--display);font-size:clamp(50px,9vw,110px);color:rgba(225,198,151,.16)}
+.ash{position:absolute;inset:0;background:radial-gradient(circle at 35% 25%,rgba(220,215,196,.18),transparent 3%),radial-gradient(circle at 65% 20%,rgba(220,215,196,.14),transparent 4%);background-size:90px 90px;animation:ash 12s linear infinite}
+@keyframes ash{to{background-position:0 500px}}
+.pompeii-copy{background:var(--panel);padding:55px}
+.pompeii-copy h3{font-family:var(--display);font-size:43px;font-weight:500;margin:0}
+.pompeii-copy p{font-family:var(--serif);font-size:19px;line-height:1.85;color:var(--muted)}
+
+.numerals{max-width:850px;margin:auto;border:1px solid var(--line);background:var(--panel);padding:30px}
+.converter{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.converter input{height:55px;background:var(--bg);border:1px solid var(--line);color:var(--text);padding:0 15px}
+.result{margin-top:15px;min-height:70px;border:1px solid var(--line);display:grid;place-items:center;font-family:var(--display);font-size:30px;color:var(--gold-light)}
+
+.arch-grid{max-width:1250px;margin:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.arch-card{height:300px;background:linear-gradient(145deg,#373025,#15120f);border:1px solid var(--line);padding:25px;display:flex;flex-direction:column;justify-content:end;position:relative;overflow:hidden;cursor:pointer}
+.arch-card::before{content:"";position:absolute;inset:18% 20% 0;border:12px solid rgba(205,190,160,.35);border-bottom:0;border-radius:50% 50% 0 0}
+.arch-card h3,.arch-card p{position:relative}
+.arch-card h3{font-family:var(--display);font-size:22px;font-weight:500;margin:0 0 7px}
+.arch-card p{color:#aaa08f;font-family:var(--serif);font-size:14px;margin:0}
+
+.fall{background:linear-gradient(120deg,#17100e,#301b18 50%,#100f0d);position:relative;overflow:hidden}
+.fall::before{content:"476";position:absolute;left:2%;bottom:-50px;font-family:var(--display);font-size:clamp(150px,30vw,420px);color:rgba(170,65,54,.08)}
+.fall-grid{max-width:1200px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:70px}
+.fall-copy h2{font-family:var(--display);font-size:clamp(45px,7vw,90px);font-weight:500;margin:0}
+.fall-copy p{font-family:var(--serif);font-size:21px;line-height:1.8;color:#b8aa95}
+.factors{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.factor{border-top:1px solid rgba(213,185,121,.25);padding:17px 0}
+.factor strong{font-family:var(--display);font-size:14px;color:var(--gold-light)}
+.factor p{font-size:13px;margin:7px 0;color:#9c907d}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);max-width:1200px;margin:auto;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stat{text-align:center;padding:45px 20px;border-left:1px solid var(--line)}
+.stat:last-child{border-left:0}
+.stat strong{font-family:var(--display);font-size:clamp(30px,4vw,55px);color:var(--gold-light)}
+.stat span{display:block;color:var(--muted);font-size:11px;margin-top:8px}
+
+footer{background:#0b0a09;color:#c9bda9;padding:90px 5% 30px;border-top:1px solid var(--line)}
+.footer-grid{max-width:1250px;margin:auto;display:grid;grid-template-columns:1.6fr repeat(3,1fr);gap:40px}
+footer h3{font-family:var(--display);font-size:15px;color:var(--gold-light);font-weight:500}
+footer a,footer p{display:block;color:#887d6d;font-size:12px;line-height:2}
+.footer-brand{font-family:var(--display);font-size:34px;color:#e4d5bc}
+.footer-bottom{max-width:1250px;margin:60px auto 0;padding-top:25px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;gap:20px;color:#685f53;font-size:10px}
+.footer-quote{font-family:var(--serif);font-size:21px;color:#a8977d}
+
+.modal{
+ position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(10px);z-index:2000;
+ display:none;place-items:center;padding:20px;
+}
+.modal.open{display:grid}
+.modal-box{max-width:760px;width:100%;max-height:90vh;overflow:auto;background:var(--panel);border:1px solid var(--line);padding:40px;position:relative}
+.close{position:absolute;top:15px;left:15px;background:transparent;border:1px solid var(--line);color:var(--text);width:36px;height:36px}
+.modal-box h2{font-family:var(--display);font-size:38px;font-weight:500;margin:0 0 15px;color:var(--gold-light)}
+.modal-box p{font-family:var(--serif);font-size:19px;line-height:1.85;color:var(--muted)}
+.modal-meta{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}
+.mega{
+ position:fixed;inset:0;background:rgba(12,10,8,.98);z-index:1500;display:none;padding:100px 6%;
+}
+body.light .mega{background:rgba(242,236,226,.98)}
+.mega.open{display:block}
+.mega-head{display:flex;justify-content:space-between;align-items:center}
+.mega h2{font-family:var(--display);font-size:55px;font-weight:500}
+.mega-close{background:transparent;border:1px solid var(--line);color:var(--text);padding:12px 18px}
+.mega-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-top:35px}
+.mega-grid a{padding:22px;border:1px solid var(--line);font-family:var(--display);font-size:13px}
+.mega-grid a:hover{background:var(--gold);color:#111}
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s,transform .8s}
+.reveal.visible{opacity:1;transform:none}
+.parallax{transition:transform .15s linear}
+.toast{
+ position:fixed;bottom:25px;right:25px;background:var(--gold);color:#17130e;
+ padding:14px 18px;z-index:3000;transform:translateY(100px);opacity:0;transition:.3s;font-size:12px
+}
+.toast.show{transform:none;opacity:1}
+
+@media(max-width:1100px){
+ .nav-desktop{display:none}
+ .menu-btn{display:grid}
+ .cards-grid{grid-template-columns:repeat(2,1fr)}
+ .gods{grid-template-columns:repeat(3,1fr)}
+ .life-grid{grid-template-columns:repeat(3,1fr)}
+ .arch-grid{grid-template-columns:repeat(2,1fr)}
+ .footer-grid{grid-template-columns:1.5fr repeat(2,1fr)}
+}
+@media(max-width:760px){
+ .section{padding:80px 5%}
+ header{height:65px;padding:0 4%}
+ .brand-text{font-size:12px}
+ .hero-content{padding-top:50px}
+ .hero h1{font-size:clamp(43px,14vw,80px)}
+ .hero-copy{font-size:17px}
+ .hero-meta{display:none}
+ .birth,.feature,.legion-layout,.pompeii,.fall-grid{grid-template-columns:1fr}
+ .stone-frame{min-height:380px}
+ .timeline-panel{grid-template-columns:1fr}
+ .timeline-visual{min-height:230px}
+ .timeline-content{padding:30px}
+ .map-stage{min-height:500px}
+ .map-land{inset:20% 5% 20% 5%}
+ .map-info{right:10px;left:10px;bottom:10px;max-width:none}
+ .cards-grid,.explorer-grid,.wars-grid{grid-template-columns:1fr}
+ .gods{grid-template-columns:repeat(2,1fr)}
+ .life-grid{grid-template-columns:repeat(2,1fr)}
+ .arch-grid{grid-template-columns:1fr}
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .stat{border-bottom:1px solid var(--line)}
+ .stat:nth-child(2){border-left:0}
+ .caesar{min-height:650px}
+ .caesar-path{overflow:auto}
+ .caesar-step{min-width:150px}
+ .soldier{height:440px}
+ .feature-content,.pompeii-copy{padding:32px}
+ .footer-grid{grid-template-columns:1fr 1fr}
+ .footer-brand{grid-column:1/-1}
+ .footer-bottom{flex-direction:column}
+ .mega-grid{grid-template-columns:1fr 1fr}
+ .mega{padding:80px 5% 30px;overflow:auto}
+}
+@media(max-width:430px){
+ .hero h1{font-size:44px}
+ .section-title{font-size:35px}
+ .cards-grid,.wars-grid,.explorer-grid,.gods,.life-grid{grid-template-columns:1fr}
+ .arch-facts,.factors,.converter{grid-template-columns:1fr}
+ .footer-grid{grid-template-columns:1fr}
+ .mega-grid{grid-template-columns:1fr}
+ .map-stage{min-height:540px}
+ .region{font-size:8px;padding:7px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+ .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">تجاوز إلى المحتوى</a>
+<div class="preloader" id="preloader" aria-label="جاري تحميل التجربة">
+ <div class="preloader-inner">
+ <div class="laurel"><span>R</span></div>
+ <p>ENTERING ROMA</p>
+ </div>
+</div>
+<div class="progress" id="progress"></div>
+
+<header id="header">
+ <a class="brand" href="#home" aria-label="ROME الصفحة الرئيسية">
+ <span class="brand-mark"><span>R</span></span>
+ <span class="brand-text">ROMA</span>
+ </a>
+ <nav class="nav-desktop" aria-label="التنقل الرئيسي">
+ <a href="#history">HISTORY</a>
+ <a href="#emperors">EMPERORS</a>
+ <a href="#wars">WARS</a>
+ <a href="#cities">CITIES</a>
+ <a href="#architecture">ARCHITECTURE</a>
+ <a href="#culture">CULTURE</a>
+ <a href="#gods">GODS</a>
+ <a href="#map">MAP</a>
+ <a href="#archives">ARCHIVES</a>
+ </nav>
+ <div class="header-actions">
+ <button class="icon-btn" id="themeBtn" aria-label="تبديل المظهر">☼</button>
+ <button class="icon-btn" id="menuBtn" aria-label="فتح القائمة">☰</button>
+ </div>
+</header>
+
+<div class="mega" id="megaMenu" aria-hidden="true">
+ <div class="mega-head">
+ <h2>EXPLORE ROMA</h2>
+ <button class="mega-close" id="megaClose">CLOSE ×</button>
+ </div>
+ <div class="mega-grid">
+ <a href="#history">تاريخ روما</a>
+ <a href="#timeline">الخط الزمني</a>
+ <a href="#map">خريطة الإمبراطورية</a>
+ <a href="#emperors">الأباطرة</a>
+ <a href="#caesar">Julius Caesar</a>
+ <a href="#legions">الفيالق الرومانية</a>
+ <a href="#wars">الحروب</a>
+ <a href="#cities">المدن</a>
+ <a href="#culture">الحياة اليومية</a>
+ <a href="#architecture">العمارة</a>
+ <a href="#colosseum">الكولوسيوم</a>
+ <a href="#gods">الآلهة والأساطير</a>
+ <a href="#language">اللغة والكتابة</a>
+ <a href="#engineering">الهندسة</a>
+ <a href="#economy">الاقتصاد والتجارة</a>
+ <a href="#archives">الأرشيف</a>
+ <a href="#pompeii">بومبي</a>
+ <a href="#fall">سقوط الإمبراطورية</a>
+ </div>
+</div>
+
+<main id="main">
+<section class="hero" id="home">
+ <div class="hero-art"></div>
+ <div class="columns"></div>
+ <div class="hero-sun parallax" data-speed="0.04"></div>
+ <div class="hero-content reveal">
+ <div class="eyebrow">AN IMMERSIVE HISTORY OF ROME</div>
+ <h1>ROME<br><em>THE EMPIRE</em><br>THAT SHAPED<br>THE WORLD</h1>
+ <p class="hero-copy">من قرية على ضفاف التيبر إلى قوة امتدت عبر ثلاثة قارات؛ حكاية روما ليست حكاية إمبراطورية فحسب، بل تاريخ للسلطة والقانون والهندسة والحرب والثقافة والإنسان.</p>
+ <div class="hero-actions">
+ <a class="btn" href="#history">ENTER ROME →</a>
+ <a class="btn secondary" href="#timeline">EXPLORE TIMELINE</a>
+ </div>
+ </div>
+ <div class="hero-meta">
+ <div class="scroll-line"><span></span> SCROLL TO TRAVEL THROUGH TIME</div>
+ <div class="hero-stat">
+ <div><strong>753 BC</strong>FOUNDING TRADITION</div>
+ <div><strong>476 AD</strong>WESTERN EMPIRE</div>
+ </div>
+ </div>
+</section>
+
+<section class="section" id="history">
+ <div class="section-head reveal">
+ <div class="kicker">I · ORIGINS</div>
+ <h2 class="section-title">THE BIRTH OF ROME</h2>
+ <p class="section-lead">بين الأسطورة والتاريخ بدأت روما؛ قصة تشكلت من ذاكرة محلية، وممالك مبكرة، ثم جمهورية ستعيد تشكيل عالم البحر المتوسط.</p>
+ </div>
+ <div class="birth">
+ <div class="stone-frame reveal">
+ <div class="stone-label">ROMA AETERNA</div>
+ <div class="statue"></div>
+ </div>
+ <div class="birth-text reveal">
+ <h3>مدينة بدأت كحكاية</h3>
+ <p>وفق التقليد الروماني، أسس رومولوس روما سنة 753 قبل الميلاد بعد نزاعه مع أخيه ريموس. لا يُعامل هذا التاريخ اليوم كحقيقة أثرية حرفية، لكنه أصبح حجر الأساس في الذاكرة السياسية والثقافية الرومانية.</p>
+ <p>تطورت روما من مجتمع ملكي إلى جمهورية في أواخر القرن السادس قبل الميلاد، ثم أصبحت قوة متوسطية كبرى بعد قرون من الصراع والتوسع.</p>
+ <div class="fact-list">
+ <div class="fact"><b>753 BC</b><span>التاريخ التقليدي لتأسيس روما.</span></div>
+ <div class="fact"><b>MONARCHY</b><span>مرحلة الملوك السبعة في التقليد الروماني.</span></div>
+ <div class="fact"><b>509 BC</b><span>التاريخ التقليدي لبداية الجمهورية.</span></div>
+ <div class="fact"><b>REPUBLIC</b><span>نظام سياسي توسعت خلاله روما عبر إيطاليا والبحر المتوسط.</span></div>
+ </div>
+ </div>
+ </div>
+</section>
+
+<section class="section dark" id="timeline">
+ <div class="section-head reveal">
+ <div class="kicker">II · CHRONICLE</div>
+ <h2 class="section-title">THE ROMAN TIMELINE</h2>
+ <p class="section-lead">تنقّل بين اللحظات التي صنعت الدولة الرومانية، من الأسطورة المؤسسة إلى نهاية الإمبراطورية الغربية.</p>
+ </div>
+ <div class="timeline-wrap">
+ <div class="timeline-nav" role="tablist" aria-label="فترات التاريخ الروماني">
+ <button class="active" data-time="foundation">753 BC</button>
+ <button data-time="republic">509 BC</button>
+ <button data-time="punic">264 BC</button>
+ <button data-time="caesar">49 BC</button>
+ <button data-time="augustus">27 BC</button>
+ <button data-time="trajan">117 AD</button>
+ <button data-time="crisis">235 AD</button>
+ <button data-time="division">395 AD</button>
+ <button data-time="fall">476 AD</button>
+ </div>
+ <div class="timeline-panel reveal">
+ <div class="timeline-visual">
+ <div class="timeline-year" id="timeYear">753 BC</div>
+ <div class="timeline-symbol" id="timeSymbol">ROMA</div>
+ </div>
+ <div class="timeline-content">
+ <h3 id="timeTitle">Foundation of Rome</h3>
+ <p id="timeText">التاريخ التقليدي لتأسيس روما على يد رومولوس. خلف هذه الرواية الأسطورية تطورت مجتمعات متعددة حول التلال المطلة على نهر التيبر، قبل أن تتبلور مدينة روما كقوة سياسية في وسط إيطاليا.</p>
+ <div class="timeline-tags" id="timeTags">
+ <span class="tag">ROMULUS</span><span class="tag">TIBER</span><span class="tag">LATIUM</span>
+ </div>
+ </div>
+ </div>
+ </div>
+</section>
+
+<section class="section" id="map">
+ <div class="section-head reveal">
+ <div class="kicker">III · IMPERIUM</div>
+ <h2 class="section-title">THE EMPIRE ON THE MAP</h2>
+ <p class="section-lead">تتبّع أقصى اتساع للإمبراطورية الرومانية واختر منطقة لتكتشف مكانتها السياسية والاقتصادية والعسكرية.</p>
+ </div>
+ <div class="map-shell reveal">
+ <div class="map-toolbar">
+ <button class="active" data-mapyear="27 BC">27 BC</button>
+ <button data-mapyear="117 AD">117 AD</button>
+ <button data-mapyear="200 AD">200 AD</button>
+ <button data-mapyear="300 AD">300 AD</button>
+ <button data-mapyear="400 AD">400 AD</button>
+ </div>
+ <div class="map-stage">
+ <div class="map-land" id="mapLand"></div>
+ <button class="region r-italia selected" data-region="Italia">ITALIA</button>
+ <button class="region r-gaul" data-region="Gaul">GAUL</button>
+ <button class="region r-hispania" data-region="Hispania">HISPANIA</button>
+ <button class="region r-britannia" data-region="Britannia">BRITANNIA</button>
+ <button class="region r-egypt" data-region="Egypt">EGYPT</button>
+ <button class="region r-africa" data-region="North Africa">NORTH AFRICA</button>
+ <button class="region r-greece" data-region="Greece">GREECE</button>
+ <button class="region r-syria" data-region="Syria">SYRIA</button>
+ <button class="region r-dacia" data-region="Dacia">DACIA</button>
+ <div class="map-info">
+ <h3 id="regionTitle">ITALIA</h3>
+ <p id="regionText">قلب الدولة الرومانية السياسي، وفيها روما وشبكة الطرق التي ربطت شبه الجزيرة بمركزها الإمبراطوري.</p>
+ </div>
+ </div>
+ </div>
+</section>
+
+<section class="section dark" id="emperors">
+ <div class="section-head reveal">
+ <div class="kicker">IV · IMPERATORES</div>
+ <h2 class="section-title">THE EMPERORS</h2>
+ <p class="section-lead">وجوه السلطة الرومانية: حكام اختلفت شخصياتهم وسياساتهم، لكن قراراتهم تركت آثارًا تمتد عبر قرون.</p>
+ </div>
+ <div class="cards-grid">
+ <article class="card emperor-card reveal" data-modal="Augustus">
+ <div class="portrait"></div><div class="card-body"><span class="reign">27 BC — 14 AD</span><h3>Augustus</h3><p>أول إمبراطور روماني وصاحب إعادة تشكيل النظام السياسي بعد الحروب الأهلية.</p></div>
+ </article>
+ <article class="card emperor-card reveal" data-modal="Tiberius">
+ <div class="portrait"></div><div class="card-body"><span class="reign">14 — 37 AD</span><h3>Tiberius</h3><p>حاكم عسكري وإداري حافظ على قدر كبير من الاستقرار الإمبراطوري.</p></div>
+ </article>
+ <article class="card emperor-card reveal" data-modal="Claudius">
+ <div class="portrait"></div><div class="card-body"><span class="reign">41 — 54 AD</span><h3>Claudius</h3><p>وسع النفوذ الروماني في بريطانيا ودعم الإدارة والبنية التحتية.</p></div>
+ </article>
+ <article class="card emperor-card reveal" data-modal="Nero">
+ <div class="portrait"></div><div class="card-body"><span class="reign">54 — 68 AD</span><h3>Nero</h3><p>إمبراطور مثير للجدل ارتبط عهده بأزمات سياسية وحريق روما والاضطرابات.</p></div>
+ </article>
+ <article class="card emperor-card reveal" data-modal="Trajan">
+ <div class="portrait"></div><div class="card-body"><span class="reign">98 — 117 AD</span><h3>Trajan</h3><p>بلغت الإمبراطورية في عهده أقصى اتساع جغرافي تقليديًا.</p></div>
+ </article>
+ <article class="card emperor-card reveal" data-modal="Hadrian">
+ <div class="portrait"></div><div class="card-body"><span class="reign">117 — 138 AD</span><h3>Hadrian</h3><p>اشتهر بتعزيز الحدود والتنقل داخل الإمبراطورية وبمشاريعه المعمارية.</p></div>
+ </article>
+ <article class="card emperor-card reveal" data-modal="Marcus Aurelius">
+ <div class="portrait"></div><div class="card-body"><span class="reign">161 — 180 AD</span><h3>Marcus Aurelius</h3><p>إمبراطور وفيلسوف رواقي واجه حروبًا وضغوطًا على حدود الدولة.</p></div>
+ </article>
+ <article class="card emperor-card reveal" data-modal="Constantine">
+ <div class="portrait"></div><div class="card-body"><span class="reign">306 — 337 AD</span><h3>Constantine</h3><p>وحّد السلطة الإمبراطورية وأعاد تأسيس بيزنطة عاصمةً إمبراطورية باسم القسطنطينية.</p></div>
+ </article>
+ </div>
+</section>
+
+<section class="caesar" id="caesar">
+ <div class="caesar-inner reveal">
+ <div class="kicker">V · THE MAN WHO CROSSED THE RUBICON</div>
+ <h2>JULIUS CAESAR</h2>
+ <p>سياسي وقائد عسكري أعاد تشكيل ميزان القوى في الجمهورية الرومانية. حملت انتصاراته في بلاد الغال والحرب الأهلية روما إلى نقطة اللاعودة السياسية.</p>
+ <div class="caesar-path">
+ <div class="caesar-step"><strong>100 BC</strong><span>ميلاده التقليدي</span></div>
+ <div class="caesar-step"><strong>58 BC</strong><span>بداية الحروب الغالية</span></div>
+ <div class="caesar-step"><strong>49 BC</strong><span>عبور الروبيكون</span></div>
+ <div class="caesar-step"><strong>46 BC</strong><span>انتصاره في الحرب الأهلية</span></div>
+ <div class="caesar-step"><strong>44 BC</strong><span>اغتياله في مجلس الشيوخ</span></div>
+ </div>
+ </div>
+</section>
+
+<section class="section" id="legions">
+ <div class="section-head reveal">
+ <div class="kicker">VI · MILITARY MACHINE</div>
+ <h2 class="section-title">THE ROMAN LEGIONS</h2>
+ <p class="section-lead">لم تكن قوة روما في السيف وحده؛ كان الجيش منظومة من التدريب والانضباط والهندسة واللوجستيات.</p>
+ </div>
+ <div class="legion-layout">
+ <div class="soldier reveal" id="soldier">
+ <div class="soldier-body"></div>
+ <div class="sword"></div>
+ <div class="shield"></div>
+ </div>
+ <div class="legion-copy reveal">
+ <div class="kicker">EQUIPMENT EXPLORER</div>
+ <h3>THE LEGIONARY</h3>
+ <p>كان الجندي الروماني جزءًا من وحدة منظمة تعتمد على التدريب المتكرر، والتحصينات، والمسير، والقدرة على بناء المعسكرات والطرق والجسور بسرعة.</p>
+ <div class="equipment">
+ <button data-equipment="scutum">SCUTUM<br><small>الدرع الكبير</small></button>
+ <button data-equipment="gladius">GLADIUS<br><small>السيف القصير</small></button>
+ <button data-equipment="galea">GALEA<br><small>الخوذة</small></button>
+ <button data-equipment="pilum">PILUM<br><small>الرمح</small></button>
+ </div>
+ </div>
+ </div>
+</section>
+
+<section class="section dark" id="wars">
+ <div class="section-head reveal">
+ <div class="kicker">VII · CONFLICT</div>
+ <h2 class="section-title">WARS OF ROME</h2>
+ <p class="section-lead">التوسع الروماني كان سلسلة من الصراعات المتشابكة؛ حروب ضد قوى متوسطية، وشعوب حدودية، وأحيانًا ضد الرومان أنفسهم.</p>
+ </div>
+ <div class="wars-grid">
+ <article class="war-card reveal"><span class="year">264–146 BC</span><h3>PUNIC WARS</h3><p>ثلاثة صراعات كبرى بين روما وقرطاج انتهت بتدمير قرطاج وصعود روما قوةً مهيمنة في غرب المتوسط.</p><div class="war-result">RESULT · ROME DOMINATES THE WESTERN MEDITERRANEAN</div></article>
+ <article class="war-card reveal"><span class="year">58–50 BC</span><h3>GALLIC WARS</h3><p>حملات يوليوس قيصر في بلاد الغال وسعت النفوذ الروماني وأصبحت أساسًا مهمًا لصعوده السياسي.</p><div class="war-result">COMMANDER · JULIUS CAESAR</div></article>
+ <article class="war-card reveal"><span class="year">49–30 BC</span><h3>CIVIL WARS</h3><p>سلسلة من الصراعات الداخلية بين قادة وفصائل رومانية انتهت بصعود أوكتافيان، الذي أصبح أغسطس.</p><div class="war-result">RESULT · THE PRINCIPATE</div></article>
+ <article class="war-card reveal"><span class="year">66–135 AD</span><h3>JEWISH–ROMAN WARS</h3><p>صراعات كبرى في يهودا، منها الثورة الكبرى وثورة بار كوخبا، وتركت آثارًا سياسية ودينية عميقة.</p><div class="war-result">REGION · JUDEA</div></article>
+ <article class="war-card reveal"><span class="year">101–102 / 105–106 AD</span><h3>DACIAN WARS</h3><p>حروب الإمبراطور ترايان ضد داقية انتهت بضم أراضٍ غنية بالموارد إلى الإمبراطورية.</p><div class="war-result">TRAJAN · DACIA ANNEXED</div></article>
+ <article class="war-card reveal"><span class="year">III–VII CENTURIES</span><h3>ROMAN–PERSIAN WARS</h3><p>صراع طويل مع قوى فارسية، من الفرثيين إلى الساسانيين، على الحدود الشرقية للبحر المتوسط.</p><div class="war-result">FRONTIER · EASTERN EMPIRE</div></article>
+ </div>
+</section>
+
+<section class="section" id="cities">
+ <div class="section-head reveal">
+ <div class="kicker">VIII · URBES</div>
+ <h2 class="section-title">CITIES OF ROME</h2>
+ <p class="section-lead">الإمبراطورية لم تكن مدينة واحدة؛ كانت شبكة ضخمة من المدن والموانئ والمراكز الإدارية التي ربطت العالم الروماني.</p>
+ </div>
+ <div class="cards-grid">
+ <article class="card reveal" data-modal="Rome"><span class="card-number">01 · ITALIA</span><h3>ROME</h3><p>العاصمة ومركز السلطة والقانون والعمارة والنخب السياسية.</p><span class="card-symbol">ROMA</span></article>
+ <article class="card reveal" data-modal="Pompeii"><span class="card-number">02 · CAMPANIA</span><h3>POMPEII</h3><p>مدينة حفظها ثوران فيزوف سنة 79 ميلادية بصورة استثنائية.</p><span class="card-symbol">P</span></article>
+ <article class="card reveal" data-modal="Alexandria"><span class="card-number">03 · AEGYPTUS</span><h3>ALEXANDRIA</h3><p>مركز علمي وتجاري كبير على ساحل مصر المتوسط.</p><span class="card-symbol">A</span></article>
+ <article class="card reveal" data-modal="Constantinople"><span class="card-number">04 · BOSPORUS</span><h3>CONSTANTINOPLE</h3><p>مدينة أعاد قسطنطين تأسيسها مركزًا إمبراطوريًا جديدًا.</p><span class="card-symbol">C</span></article>
+ <article class="card reveal" data-modal="Carthage"><span class="card-number">05 · AFRICA</span><h3>CARTHAGE</h3><p>مدينة قرطاجية أصبحت لاحقًا مركزًا رومانيًا مهمًا في شمال أفريقيا.</p><span class="card-symbol">K</span></article>
+ <article class="card reveal" data-modal="Antioch"><span class="card-number">06 · SYRIA</span><h3>ANTIOCH</h3><p>من أهم مدن الشرق الروماني ومركز للتجارة والإدارة والثقافة.</p><span class="card-symbol">AN</span></article>
+ <article class="card reveal" data-modal="Londinium"><span class="card-number">07 · BRITANNIA</span><h3>LONDINIUM</h3><p>مركز تجاري وإداري مهم في بريطانيا الرومانية.</p><span class="card-symbol">L</span></article>
+ <article class="card reveal" data-modal="Ephesus"><span class="card-number">08 · ASIA</span><h3>EPHESUS</h3><p>مدينة مزدهرة وميناء مهم في آسيا الصغرى الرومانية.</p><span class="card-symbol">E</span></article>
+ </div>
+</section>
+
+<section class="section dark" id="culture">
+ <div class="section-head reveal">
+ <div class="kicker">IX · DAILY LIFE</div>
+ <h2 class="section-title">LIFE IN ROME</h2>
+ <p class="section-lead">الإمبراطورية من منظور الإنسان: ماذا كان يأكل؟ أين يعيش؟ كيف يعمل ويتعلم ويحتفل ويعبد؟</p>
+ </div>
+ <div class="life-grid">
+ <article class="life-card reveal"><div class="life-icon">I</div><h3>FOOD</h3><p>الخبز والزيتون والنبيذ والبقوليات شكلت جزءًا أساسيًا من الغذاء، مع تفاوت كبير بين الطبقات.</p></article>
+ <article class="life-card reveal"><div class="life-icon">II</div><h3>CLOTHING</h3><p>التوغا رمز للمواطنة والمكانة، بينما استخدم عامة الناس ملابس أبسط وأكثر عملية.</p></article>
+ <article class="life-card reveal"><div class="life-icon">III</div><h3>HOUSES</h3><p>تنوع السكن بين منازل النخبة الواسعة والمباني السكنية متعددة الطوابق في المدن.</p></article>
+ <article class="life-card reveal"><div class="life-icon">IV</div><h3>EDUCATION</h3><p>ركز التعليم الخاص بالنخبة على القراءة والكتابة والقواعد والخطابة والأدب.</p></article>
+ <article class="life-card reveal"><div class="life-icon">V</div><h3>FAMILY</h3><p>كان رب الأسرة يتمتع بسلطة قانونية واجتماعية كبيرة داخل الأسرة الرومانية.</p></article>
+ <article class="life-card reveal"><div class="life-icon">VI</div><h3>RELIGION</h3><p>كان الدين جزءًا من الحياة العامة والمنزلية، وتعددت الطقوس والآلهة والممارسات.</p></article>
+ <article class="life-card reveal"><div class="life-icon">VII</div><h3>MARKETS</h3><p>الأسواق والمنتديات والموانئ كانت مراكز لتبادل الحبوب والزيت والنبيذ والسلع الفاخرة.</p></article>
+ <article class="life-card reveal"><div class="life-icon">VIII</div><h3>ENTERTAINMENT</h3><p>شملت العروض المسرحية وسباقات العربات والمصارعات وغيرها من الاحتفالات العامة.</p></article>
+ <article class="life-card reveal"><div class="life-icon">IX</div><h3>BATHS</h3><p>كانت الحمامات مؤسسات اجتماعية وثقافية، وليست مجرد أماكن للاستحمام.</p></article>
+ <article class="life-card reveal"><div class="life-icon">X</div><h3>MARRIAGE</h3><p>كان الزواج مؤسسة اجتماعية وقانونية تتقاطع مع الملكية والتحالفات العائلية.</p></article>
+ <article class="life-card reveal"><div class="life-icon">XI</div><h3>WORK</h3><p>عمل الرومان في الزراعة والحرف والتجارة والإدارة والجيش وغيرها من المهن.</p></article>
+ <article class="life-card reveal"><div class="life-icon">XII</div><h3>SLAVERY</h3><p>كان الاسترقاق جزءًا مؤسسيًا من الاقتصاد والمجتمع الروماني، وشكّل حياة ملايين البشر.</p></article>
+ </div>
+</section>
+
+<section class="section" id="architecture">
+ <div class="section-head reveal">
+ <div class="kicker">X · STONE & ENGINEERING</div>
+ <h2 class="section-title">ROMAN ARCHITECTURE</h2>
+ <p class="section-lead">الأقواس والخرسانة والقباب والطرق والمياه؛ حول الرومان الهندسة إلى أداة لبناء دولة مترابطة.</p>
+ </div>
+ <div class="arch-grid">
+ <article class="arch-card reveal" data-modal="Colosseum"><h3>COLOSSEUM</h3><p>مدرج فلافي ضخم افتُتح في عهد تيتوس.</p></article>
+ <article class="arch-card reveal" data-modal="Pantheon"><h3>PANTHEON</h3><p>معبد ذو قبة استثنائية محفوظة بصورة رائعة.</p></article>
+ <article class="arch-card reveal" data-modal="Forum"><h3>ROMAN FORUM</h3><p>قلب الحياة السياسية والدينية في روما.</p></article>
+ <article class="arch-card reveal" data-modal="Aqueducts"><h3>AQUEDUCTS</h3><p>منشآت نقلت المياه لمسافات طويلة إلى المدن.</p></article>
+ <article class="arch-card reveal" data-modal="Roads"><h3>ROMAN ROADS</h3><p>شبكة طرق خدمت الجيش والتجارة والإدارة.</p></article>
+ <article class="arch-card reveal" data-modal="Baths"><h3>THERMAE</h3><p>مجمعات عامة للاستحمام والتواصل والترفيه.</p></article>
+ <article class="arch-card reveal" data-modal="Temples"><h3>TEMPLES</h3><p>مراكز للعبادة والطقوس والذاكرة السياسية.</p></article>
+ <article class="arch-card reveal" data-modal="Basilicas"><h3>BASILICAS</h3><p>مبانٍ عامة ارتبطت بالقضاء والأعمال والإدارة.</p></article>
+ </div>
+</section>
+
+<section class="section dark" id="colosseum">
+ <div class="section-head reveal">
+ <div class="kicker">XI · AMPHITHEATRUM FLAVIUM</div>
+ <h2 class="section-title">THE COLOSSEUM</h2>
+ <p class="section-lead">تجربة مقطعية مبسطة تكشف كيف اجتمعت العمارة والجمهور والممرات والـArena داخل أشهر مدرج روماني.</p>
+ </div>
+ <div class="feature reveal">
+ <div class="feature-visual">
+ <div class="colosseum"></div>
+ </div>
+ <div class="feature-content">
+ <h3>ENGINEERED FOR SPECTACLE</h3>
+ <p>بدأ بناء المدرج تحت الإمبراطور فيسباسيان نحو 70–72 ميلادية، وافتتحه تيتوس في 80 ميلادية. استوعب جمهورًا ضخمًا وفق تقديرات تختلف بين الدراسات، وصُمم بدرجات وممرات ومخارج تساعد على تنظيم الحركة.</p>
+ <div class="arch-facts">
+ <div class="arch-fact"><strong>80 AD</strong><span>الافتتاح التقليدي</span></div>
+ <div class="arch-fact"><strong>FLAVIAN</strong><span>الأسرة التي بدأته</span></div>
+ <div class="arch-fact"><strong>ARENA</strong><span>مساحة العروض المركزية</span></div>
+ <div class="arch-fact"><strong>HYPOGEUM</strong><span>منشآت تحت أرضية لاحقة ومعقدة</span></div>
+ </div>
+ <button class="btn" style="margin-top:25px" data-modal="Colosseum Cross Section">EXPLORE THE STRUCTURE</button>
+ </div>
+ </div>
+</section>
+
+<section class="section" id="gods">
+ <div class="section-head reveal">
+ <div class="kicker">XII · NUMINA</div>
+ <h2 class="section-title">ROMAN GODS</h2>
+ <p class="section-lead">الآلهة الرومانية لم تكن مجرد شخصيات أسطورية؛ ارتبطت بالمدينة والدولة والأسرة والجيش والمواسم.</p>
+ </div>
+ <div class="gods">
+ <article class="god reveal" data-modal="Jupiter"><span class="symbol">I</span><h3>JUPITER</h3><p>إله السماء والسلطة</p></article>
+ <article class="god reveal" data-modal="Juno"><span class="symbol">II</span><h3>JUNO</h3><p>الزواج وحماية الدولة</p></article>
+ <article class="god reveal" data-modal="Mars"><span class="symbol">III</span><h3>MARS</h3><p>الحرب وحامي روما</p></article>
+ <article class="god reveal" data-modal="Venus"><span class="symbol">IV</span><h3>VENUS</h3><p>الحب والنسب الأسطوري</p></article>
+ <article class="god reveal" data-modal="Neptune"><span class="symbol">V</span><h3>NEPTUNE</h3><p>البحر والمياه</p></article>
+ <article class="god reveal" data-modal="Mercury"><span class="symbol">VI</span><h3>MERCURY</h3><p>التجارة والرسائل</p></article>
+ <article class="god reveal" data-modal="Minerva"><span class="symbol">VII</span><h3>MINERVA</h3><p>الحكمة والحرف</p></article>
+ <article class="god reveal" data-modal="Apollo"><span class="symbol">VIII</span><h3>APOLLO</h3><p>النبوءة والموسيقى</p></article>
+ <article class="god reveal" data-modal="Diana"><span class="symbol">IX</span><h3>DIANA</h3><p>الصيد والقمر</p></article>
+ <article class="god reveal" data-modal="Vulcan"><span class="symbol">X</span><h3>VULCAN</h3><p>النار والحدادة</p></article>
+ </div>
+</section>
+
+<section class="section dark" id="language">
+ <div class="section-head reveal">
+ <div class="kicker">XIII · VERBA ROMAE</div>
+ <h2 class="section-title">THE LANGUAGE OF ROME</h2>
+ <p class="section-lead">اللاتينية كانت لغة الإدارة والقانون والأدب في أجزاء واسعة من العالم الروماني، وتركت أثرًا عميقًا في لغات أوروبا.</p>
+ </div>
+ <div class="numerals reveal">
+ <h3 style="font-family:var(--display);font-weight:500">ROMAN NUMERAL CONVERTER</h3>
+ <p style="color:var(--muted);font-family:var(--serif)">أدخل رقمًا صحيحًا من 1 إلى 3999 وحوّله إلى أرقام رومانية.</p>
+ <div class="converter">
+ <input id="numberInput" type="number" min="1" max="3999" value="2026" aria-label="رقم للتحويل">
+ <button class="btn" id="convertBtn">CONVERT</button>
+ </div>
+ <div class="result" id="numeralResult">MMXXVI</div>
+ </div>
+</section>
+
+<section class="section" id="engineering">
+ <div class="section-head reveal">
+ <div class="kicker">XIV · IMPERIUM ENGINEERED</div>
+ <h2 class="section-title">ENGINEERING THE EMPIRE</h2>
+ <p class="section-lead">كل طريق وجسر وقناة مياه كان جزءًا من بنية تحتية جعلت المدن والجيوش والأسواق أكثر اتصالًا.</p>
+ </div>
+ <div class="cards-grid">
+ <article class="card reveal" data-modal="Concrete"><span class="card-number">01</span><h3>ROMAN CONCRETE</h3><p>استخدم الرومان مواد رابطة وتقنيات بناء مكّنتهم من إنشاء منشآت ضخمة ومعقدة.</p><span class="card-symbol">OPUS</span></article>
+ <article class="card reveal" data-modal="Aqueduct Engineering"><span class="card-number">02</span><h3>WATER SYSTEMS</h3><p>قنوات وجسور مائية وخزانات وشبكات توزيع زودت المدن بالمياه.</p><span class="card-symbol">AQUA</span></article>
+ <article class="card reveal" data-modal="Road Engineering"><span class="card-number">03</span><h3>ROADS</h3><p>طرق عسكرية وتجارية وإدارية ربطت مناطق الإمبراطورية.</p><span class="card-symbol">VIA</span></article>
+ <article class="card reveal" data-modal="Sewers"><span class="card-number">04</span><h3>SEWERS</h3><p>أنظمة صرف ساعدت المدن على إدارة المياه ومخلفات الحياة الحضرية.</p><span class="card-symbol">CLOACA</span></article>
+ </div>
+</section>
+
+<section class="section dark" id="economy">
+ <div class="section-head reveal">
+ <div class="kicker">XV · COMMERCIUM</div>
+ <h2 class="section-title">THE ECONOMY OF ROME</h2>
+ <p class="section-lead">من حقول القمح إلى الموانئ الكبرى، اعتمد العالم الروماني على شبكة مترابطة من الزراعة والضرائب والتجارة والنقل.</p>
+ </div>
+ <div class="stats reveal">
+ <div class="stat"><strong>DENARIUS</strong><span>عملة فضية أساسية في النظام النقدي الروماني</span></div>
+ <div class="stat"><strong>GRAIN</strong><span>الحبوب عنصر حاسم في إمداد المدن الكبرى</span></div>
+ <div class="stat"><strong>MARE</strong><span>البحر المتوسط كان محور التجارة الإمبراطورية</span></div>
+ <div class="stat"><strong>VIAE</strong><span>الطرق ربطت الإنتاج بالأسواق والجيش</span></div>
+ </div>
+ <div class="cards-grid" style="margin-top:35px">
+ <article class="card reveal" data-modal="Coins"><h3>COINS</h3><p>العملات حملت صور الأباطرة والآلهة والرموز السياسية.</p></article>
+ <article class="card reveal" data-modal="Ports"><h3>PORTS</h3><p>موانئ مثل أوستيا دعمت إمداد روما بالحبوب والبضائع.</p></article>
+ <article class="card reveal" data-modal="Agriculture"><h3>AGRICULTURE</h3><p>الزراعة بقيت أساس الاقتصاد، من الحبوب إلى الزيتون والكروم.</p></article>
+ <article class="card reveal" data-modal="Trade Routes"><h3>TRADE ROUTES</h3><p>طرق بحرية وبرية نقلت السلع والأشخاص والأفكار بين الأقاليم.</p></article>
+ </div>
+</section>
+
+<section class="section" id="archives">
+ <div class="section-head reveal">
+ <div class="kicker">XVI · DIGITAL MUSEUM</div>
+ <h2 class="section-title">THE ARCHIVES</h2>
+ <p class="section-lead">متحف رقمي مصغّر لاستكشاف أنواع الأدلة التي بقيت من العالم الروماني.</p>
+ </div>
+ <div class="explorer">
+ <div class="search-box">
+ <input id="archiveSearch" type="search" placeholder="ابحث عن إمبراطور، مدينة، مبنى، إله، أثر..." aria-label="البحث في الأرشيف">
+ </div>
+ <div class="filter-row">
+ <button class="filter active" data-filter="all">ALL</button>
+ <button class="filter" data-filter="statue">STATUES</button>
+ <button class="filter" data-filter="coin">COINS</button>
+ <button class="filter" data-filter="weapon">WEAPONS</button>
+ <button class="filter" data-filter="inscription">INSCRIPTIONS</button>
+ <button class="filter" data-filter="pottery">POTTERY</button>
+ <button class="filter" data-filter="architecture">ARCHITECTURE</button>
+ </div>
+ <div class="explorer-grid" id="archiveGrid">
+ <article class="card explorer-item reveal" data-type="statue" data-search="statue augustus emperor تمثال أغسطس"><span class="card-number">STATUE · 001</span><h3>AUGUSTUS</h3><p>تماثيل الإمبراطور كانت وسيلة مهمة لعرض السلطة والهوية الرسمية.</p></article>
+ <article class="card explorer-item reveal" data-type="coin" data-search="coin denarius عملة دينار"><span class="card-number">COIN · 002</span><h3>DENARIUS</h3><p>العملة أداة اقتصادية وسياسية حملت صور الحكام والرسائل الرسمية.</p></article>
+ <article class="card explorer-item reveal" data-type="weapon" data-search="gladius sword weapon سيف"><span class="card-number">WEAPON · 003</span><h3>GLADIUS</h3><p>سيف قصير ارتبط بصورة الجندي الروماني في العصر الإمبراطوري المبكر.</p></article>
+ <article class="card explorer-item reveal" data-type="inscription" data-search="latin inscription كتابة نقش لاتيني"><span class="card-number">INSCRIPTION · 004</span><h3>LATIN INSCRIPTION</h3><p>النقوش مصدر مباشر لدراسة الأسماء والمناصب والطقوس والمشاريع.</p></article>
+ <article class="card explorer-item reveal" data-type="pottery" data-search="pottery amphora فخار أمفورا"><span class="card-number">POTTERY · 005</span><h3>AMPHORA</h3><p>أوعية النقل تكشف شبكات التجارة الخاصة بالزيت والنبيذ والمواد الغذائية.</p></article>
+ <article class="card explorer-item reveal" data-type="architecture" data-search="pantheon colosseum building عمارة"><span class="card-number">ARCHITECTURE · 006</span><h3>PANTHEON</h3><p>المباني نفسها وثائق ضخمة عن التقنية والدين والسياسة والمجتمع.</p></article>
+ </div>
+ <p id="emptyArchive" style="display:none;text-align:center;color:var(--muted);padding:40px">لا توجد نتائج مطابقة. جرّب كلمة بحث أخرى.</p>
+ </div>
+</section>
+
+<section class="section dark" id="pompeii">
+ <div class="section-head reveal">
+ <div class="kicker">XVII · 79 AD</div>
+ <h2 class="section-title">POMPEII — A CITY FROZEN IN TIME</h2>
+ <p class="section-lead">فيزوف غطّى المدينة بالرماد والمواد البركانية، فحفظ تفاصيل نادرة عن الحياة الحضرية الرومانية.</p>
+ </div>
+ <div class="pompeii reveal">
+ <div class="pompeii-visual"><div class="ash"></div></div>
+ <div class="pompeii-copy">
+ <h3>A DAY INTERRUPTED</h3>
+ <p>كانت بومبي مدينة نابضة بالمنازل والمحلات والحمامات والحدائق والرسومات الجدارية. في سنة 79 ميلادية أدى ثوران جبل فيزوف إلى دفن المدينة والمناطق المحيطة بها، مع اختلاف تفاصيل الكارثة بين المصادر والأدلة الأثرية.</p>
+ <p>اليوم تمنح الشوارع والكتابات واللوحات والبيوت المحفوظة الباحثين نافذة استثنائية على المجتمع الروماني خارج النخبة السياسية في روما.</p>
+ <button class="btn" data-modal="Pompeii Explorer">WALK THE CITY</button>
+ </div>
+ </div>
+</section>
+
+<section class="section fall" id="fall">
+ <div class="fall-grid">
+ <div class="fall-copy reveal">
+ <div class="kicker">XVIII · THE END</div>
+ <h2>THE FALL</h2>
+ <p>لم تسقط الإمبراطورية الغربية بسبب حدث واحد. تداخلت الأزمات السياسية والاقتصادية والعسكرية والإدارية مع ضغوط خارجية وتحولات طويلة داخل العالم الروماني.</p>
+ <p>في 476 ميلادية عُزل رومولوس أوغستولوس، وهو التاريخ الذي أصبح تقليديًا رمزًا لنهاية الإمبراطورية الرومانية الغربية، بينما استمرت الإمبراطورية الرومانية الشرقية قرونًا أخرى.</p>
+ </div>
+ <div class="factors reveal">
+ <div class="factor"><strong>POLITICAL INSTABILITY</strong><p>تكررت الصراعات على السلطة وتبدلت الحكومات بسرعة خلال فترات الأزمات.</p></div>
+ <div class="factor"><strong>ECONOMIC PRESSURE</strong><p>واجهت الدولة مشاكل في الموارد والضرائب والتضخم وتمويل الجيش.</p></div>
+ <div class="factor"><strong>MILITARY PRESSURE</strong><p>ازدادت الضغوط على حدود واسعة وتطلب الدفاع عنها موارد هائلة.</p></div>
+ <div class="factor"><strong>CIVIL WARS</strong><p>الحروب الداخلية استنزفت الموارد وأضعفت الاستقرار السياسي.</p></div>
+ <div class="factor"><strong>ADMINISTRATION</strong><p>إدارة إمبراطورية ضخمة ومتنوعة أصبحت أكثر تعقيدًا مع مرور الوقت.</p></div>
+ <div class="factor"><strong>MIGRATIONS & INVASIONS</strong><p>تحركت جماعات وشعوب داخل وحول الحدود وأثرت في التوازنات السياسية والعسكرية.</p></div>
+ <div class="factor"><strong>DIVISION</strong><p>أصبحت الإمبراطورية تُدار على نحو أكثر انفصالًا بين الشرق والغرب.</p></div>
+ <div class="factor"><strong>476 AD</strong><p>عزل رومولوس أوغستولوس يمثل تقليديًا نهاية الإمبراطورية الغربية.</p></div>
+ </div>
+ </div>
+</section>
+
+<section class="section" id="explore">
+ <div class="section-head reveal">
+ <div class="kicker">XIX · THE EXPLORER</div>
+ <h2 class="section-title">EXPLORE ROME</h2>
+ <p class="section-lead">ابحث عبر مجموعة مختارة من الشخصيات والمدن والأحداث والمباني والمفاهيم التي تشكل التجربة.</p>
+ </div>
+ <div class="explorer">
+ <div class="search-box">
+ <input id="globalSearch" type="search" placeholder="مثال: Caesar أو Colosseum أو Egypt..." aria-label="البحث في الموقع">
+ </div>
+ <div class="explorer-grid" id="globalResults"></div>
+ </div>
+</section>
+</main>
+
+<footer>
+ <div class="footer-grid">
+ <div>
+ <div class="footer-brand">ROMA</div>
+ <p class="footer-quote">“Rome was not built in a day.”</p>
+ <p>تجربة رقمية تعليمية/ثقافية عن الحضارة الرومانية القديمة، تجمع السرد التاريخي مع الاستكشاف التفاعلي.</p>
+ </div>
+ <div>
+ <h3>HISTORY</h3>
+ <a href="#history">Birth of Rome</a>
+ <a href="#timeline">Timeline</a>
+ <a href="#fall">The Fall</a>
+ <a href="#caesar">Julius Caesar</a>
+ </div>
+ <div>
+ <h3>EXPLORE</h3>
+ <a href="#emperors">Emperors</a>
+ <a href="#wars">Wars</a>
+ <a href="#cities">Cities</a>
+ <a href="#map">Empire Map</a>
+ </div>
+ <div>
+ <h3>CULTURE</h3>
+ <a href="#architecture">Architecture</a>
+ <a href="#culture">Daily Life</a>
+ <a href="#gods">Gods</a>
+ <a href="#archives">Archives</a>
+ </div>
+ </div>
+ <div class="footer-bottom">
+ <span>ANCIENT ROME · DIGITAL HISTORICAL EXPERIENCE</span>
+ <span>ROME WAS NOT BUILT IN A DAY.</span>
+ </div>
+</footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+ <div class="modal-box">
+ <button class="close" id="modalClose" aria-label="إغلاق">×</button>
+ <div class="kicker" id="modalKicker">ROMA</div>
+ <h2 id="modalTitle">ROME</h2>
+ <div class="modal-meta" id="modalMeta"></div>
+ <p id="modalText"></p>
+ </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+ "use strict";
+
+ const $ = (s,root=document) => root.querySelector(s);
+ const $$ = (s,root=document) => [...root.querySelectorAll(s)];
+
+ const modalData = {
+ Augustus:{kicker:"IMPERATOR",meta:["27 BC — 14 AD","FIRST EMPEROR"],text:"أوكتافيان، الذي أصبح أغسطس، أنهى سلسلة من الحروب الأهلية وأعاد تنظيم الدولة مع الحفاظ على مؤسسات جمهورية في مظهرها. ارتبط عهده بإصلاحات إدارية وعسكرية وبداية مرحلة طويلة من الاستقرار النسبي عُرفت لاحقًا باسم Pax Romana."},
+ Tiberius:{kicker:"IMPERATOR",meta:["14 — 37 AD","JULIO-CLAUDIAN"],text:"تيبيريوس خلف أغسطس وحافظ على حدود الإمبراطورية إلى حد كبير. كان قائدًا عسكريًا متمرسًا، ويُعد عهده مثالًا على انتقال السلطة الإمبراطورية المبكرة إلى نظام أكثر استقرارًا."},
+ Claudius:{kicker:"IMPERATOR",meta:["41 — 54 AD","BRITANNIA"],text:"شهد عهد كلوديوس توسعًا رومانيًا مهمًا في بريطانيا، إلى جانب اهتمام بالإدارة والقضاء ومشروعات البنية التحتية. كان حكمه جزءًا من الأسرة اليوليو-كلودية."},
+ Nero:{kicker:"IMPERATOR",meta:["54 — 68 AD","JULIO-CLAUDIAN"],text:"ارتبط نيرون في المصادر القديمة بسلوكيات سياسية وشخصية مثيرة للجدل، وبحريق روما سنة 64 ميلادية. شهد عهده أيضًا تمردات وانتهى بانتحاره سنة 68، لتبدأ أزمة عام الأباطرة الأربعة."},
+ Trajan:{kicker:"IMPERATOR",meta:["98 — 117 AD","MAXIMUM EXTENT"],text:"قاد ترايان حملات ناجحة ضد داقية، ووسع النفوذ الروماني شرقًا. خلال عهده وصلت الإمبراطورية إلى أقصى اتساع جغرافي تقليديًا، كما ارتبط اسمه بمشروعات عمرانية ضخمة في روما."},
+ Hadrian:{kicker:"IMPERATOR",meta:["117 — 138 AD","FRONTIERS"],text:"اشتهر هادريان برحلاته داخل الإمبراطورية وبتركيزه على تثبيت الحدود أكثر من التوسع المستمر. يرتبط اسمه بسور هادريان وبإعادة بناء البانثيون ومشروعات معمارية أخرى."},
+ "Marcus Aurelius":{kicker:"IMPERATOR & PHILOSOPHER",meta:["161 — 180 AD","STOICISM"],text:"كان ماركوس أوريليوس فيلسوفًا رواقيًا وإمبراطورًا واجه حروبًا وأوبئة وضغوطًا على الحدود. كتاباته المعروفة باسم التأملات تقدم مصدرًا فريدًا عن فلسفته الشخصية."},
+ Constantine:{kicker:"IMPERATOR",meta:["306 — 337 AD","CONSTANTINOPLE"],text:"برز قسطنطين بعد صراعات داخلية وأصبح إمبراطورًا وحيدًا. ارتبط اسمه بسياسة جديدة تجاه المسيحية، وبإعادة تأسيس بيزنطة باسم القسطنطينية لتكون مركزًا إمبراطوريًا مهمًا."},
+ Rome:{kicker:"URBS",meta:["ITALIA","CAPUT MUNDI"],text:"كانت روما مركز الدولة السياسي والرمزي، وتطورت من مستوطنة على التلال إلى مدينة ضخمة تضم المنتديات والمعابد والحمامات والمدرجات وشبكات المياه."},
+ Pompeii:{kicker:"CAMPANIA",meta:["79 AD","VESUVIUS"],text:"مدينة مزدهرة في كامبانيا حفظ ثوران فيزوف أجزاء واسعة من عمرانها ورسوماتها ونقوشها وأدوات الحياة اليومية."},
+ Alexandria:{kicker:"AEGYPTUS",meta:["MEDITERRANEAN","PORT CITY"],text:"أسسها الإسكندر الأكبر في القرن الرابع قبل الميلاد، ثم أصبحت مركزًا مهمًا في مصر الرومانية للتجارة والمعرفة والثقافة."},
+ Constantinople:{kicker:"NOVA ROMA",meta:["BOSPORUS","330 AD"],text:"أعاد قسطنطين تأسيس المدينة القديمة بيزنطة وافتتحها مركزًا إمبراطوريًا جديدًا. أصبحت لاحقًا عاصمة الإمبراطورية الرومانية الشرقية."},
+ Carthage:{kicker:"AFRICA PROCONSULARIS",meta:["NORTH AFRICA","PORT"],text:"بعد تدمير قرطاج في الحرب البونية الثالثة، أعيد تأسيسها مستعمرة رومانية ثم أصبحت من أهم مراكز شمال أفريقيا الرومانية."},
+ Antioch:{kicker:"SYRIA",meta:["EASTERN MEDITERRANEAN","CITY"],text:"كانت أنطاكية من أهم مدن الشرق الروماني ومركزًا للإدارة والتجارة والثقافة، وموقعًا استراتيجيًا قريبًا من الحدود الشرقية."},
+ Londinium:{kicker:"BRITANNIA",meta:["THAMES","TRADE"],text:"نشأت لندينيوم كمركز تجاري وإداري مهم على نهر التيمز، وأصبحت من أبرز مدن بريطانيا الرومانية."},
+ Ephesus:{kicker:"ASIA",meta:["ANATOLIA","PORT"],text:"كانت أفسس مركزًا حضريًا وتجاريًا مهمًا في آسيا الصغرى، واشتهرت بمعبد أرتميس وبمبانيها العامة."},
+ Colosseum:{kicker:"AMPHITHEATRUM FLAVIUM",meta:["ROME","80 AD"],text:"المدرج الفلافي بُني في عهد الأسرة الفلافية وافتتحه تيتوس سنة 80 ميلادية. استُخدم للعروض العامة، ومنها المصارعات والصيد الاستعراضي، وكان نظام الحركة داخله معقدًا ومدروسًا."},
+ "Colosseum Cross Section":{kicker:"STRUCTURE",meta:["ARENA","CIRCULATION"],text:"يتكون المدرج من حلقات متدرجة من المقاعد والممرات. ساعدت المداخل والممرات الشعاعية والحلقية على توزيع الجمهور، بينما احتوت المنطقة أسفل أرضية الـArena على منشآت وخدمات للعروض."},
+ Pantheon:{kicker:"ROMAN ARCHITECTURE",meta:["ROME","DOME"],text:"البانثيون الحالي يعود إلى إعادة بناء في عهد الإمبراطور هادريان في القرن الثاني الميلادي. أكثر عناصره شهرة القبة الخرسانية والـoculus المفتوح في قمتها."},
+ Forum:{kicker:"ROMAN FORUM",meta:["POLITICS","RELIGION"],text:"كان المنتدى الروماني مركزًا للحياة العامة في روما، وضم مباني سياسية ودينية وقضائية ونصبًا تذكارية."},
+ Aqueducts:{kicker:"AQUA",meta:["WATER","ENGINEERING"],text:"اعتمدت القنوات الرومانية على الانحدار المحسوب لنقل المياه من مصادرها إلى المدن. لم تكن كلها جسورًا مقوسة؛ كثير من مساراتها مر عبر أنفاق أو قنوات مغطاة."},
+ Roads:{kicker:"VIA",meta:["MILITARY","TRADE"],text:"أنشأ الرومان شبكة واسعة من الطرق، بعضها مهد لأغراض عسكرية وإدارية ثم خدم التجارة والسفر. تفاوت تصميم الطرق حسب البيئة والاحتياج."},
+ Baths:{kicker:"THERMAE",meta:["PUBLIC LIFE","HYGIENE"],text:"كانت الحمامات الكبرى مجمعات تضم أحواضًا بدرجات حرارة مختلفة ومساحات للتواصل والرياضة والخدمات. أصبحت جزءًا مهمًا من الحياة الحضرية."},
+ Temples:{kicker:"RELIGION",meta:["SACRED SPACE","RITUAL"],text:"المعابد الرومانية كانت أماكن للعبادة والطقوس، وارتبط بعضها بالمؤسسات السياسية والذاكرة العامة للأباطرة والانتصارات."},
+ Basilicas:{kicker:"PUBLIC BUILDING",meta:["LAW","BUSINESS"],text:"كانت البازيليكا مباني عامة واسعة استخدمت للقضاء والأعمال والاجتماعات، ثم أصبح شكلها مؤثرًا في العمارة المسيحية لاحقًا."},
+ Scutum:{kicker:"LEGIONARY EQUIPMENT",meta:["SHIELD","INFANTRY"],text:"الـScutum درع كبير، غالبًا منحني، وفر حماية واسعة للجندي وساعد على تشكيلات المشاة. اختلفت أشكاله ومواده عبر الفترات."},
+ Gladius:{kicker:"LEGIONARY EQUIPMENT",meta:["SWORD","CLOSE COMBAT"],text:"الـGladius سيف قصير ارتبط بصورة الجندي الروماني، وكان مناسبًا للقتال القريب والطعن في تشكيلات المشاة."},
+ Galea:{kicker:"LEGIONARY EQUIPMENT",meta:["HELMET","PROTECTION"],text:"الخوذات الرومانية جاءت بأشكال متعددة حسب العصر والمنطقة، وكانت تحمي الرأس وتساعد أحيانًا على تثبيت واقيات إضافية."},
+ Pilum:{kicker:"LEGIONARY EQUIPMENT",meta:["JAVELIN","THROWING WEAPON"],text:"الـPilum رمح للرمي صُمم بحيث يسبب أثرًا قويًا عند الاصطدام، وكان جزءًا مهمًا من تسليح المشاة الروماني."},
+ Jupiter:{kicker:"DEUS",meta:["SKY","STATE"],text:"جوبيتر كان من أهم آلهة الدولة الرومانية، مرتبطًا بالسماء والرعد والقسم والسلطة السياسية. كان معبد جوبيتر في الكابيتول مركزًا دينيًا بارزًا."},
+ Juno:{kicker:"DEA",meta:["MARRIAGE","STATE"],text:"جونو زوجة جوبيتر وحامية الزواج والنساء والدولة في جوانب من الدين الروماني، وعضو أساسي في الثالوث الكابيتولي."},
+ Mars:{kicker:"DEUS",meta:["WAR","ROME"],text:"مارس إله الحرب، لكنه ارتبط أيضًا بالزراعة وبهوية روما العسكرية. احتل مكانة مركزية في الأساطير التي ربطت المدينة بأصولها."},
+ Venus:{kicker:"DEA",meta:["LOVE","ANCESTRY"],text:"فينوس إلهة الحب والجمال، وربطت الأساطير الرومانية نسل روما وأحد سلالاتها البطولية بالإلهة عبر أينياز."},
+ Neptune:{kicker:"DEUS",meta:["SEA","WATER"],text:"نبتون ارتبط بالبحر والمياه والزلازل في التقاليد الرومانية، وكان نظيره اليوناني بوسيدون."},
+ Mercury:{kicker:"DEUS",meta:["TRADE","MESSENGER"],text:"ميركوري إله التجارة والرسائل والسرعة والحدود، ونظيره اليوناني هرمس."},
+ Minerva:{kicker:"DEA",meta:["WISDOM","CRAFT"],text:"مينرفا ارتبطت بالحكمة والحرف والفنون والمهارات، وكانت جزءًا من الثالوث الكابيتولي مع جوبيتر وجونو."},
+ Apollo:{kicker:"DEUS",meta:["PROPHECY","MUSIC"],text:"أبولو احتفظ بمكانة مهمة في الدين الروماني بوصفه إلهًا للنبوءة والشفاء والموسيقى، وتبناه الرومان من التقليد اليوناني مع تطوير عبادته محليًا."},
+ Diana:{kicker:"DEA",meta:["HUNT","MOON"],text:"ديانا ارتبطت بالصيد والطبيعة، ومع مرور الوقت ارتبطت في بعض التقاليد بالقمر."},
+ Vulcan:{kicker:"DEUS",meta:["FIRE","FORGE"],text:"فولكان إله النار والحدادة والصناعات المعدنية، وارتبطت به طقوس تهدف إلى السيطرة الرمزية على أخطار النار."},
+ Concrete:{kicker:"ENGINEERING",meta:["OPUS CAEMENTICIUM","STRUCTURE"],text:"الخرسانة الرومانية، أو opus caementicium، سمحت ببناء كتل وأقبية وقباب بأشكال واسعة. تركيبها اختلف حسب المواد المحلية والمشروع."},
+ "Aqueduct Engineering":{kicker:"ENGINEERING",meta:["GRADIENT","WATER"],text:"اعتمدت القنوات على فروق ارتفاع صغيرة ومحسوبة. كانت المياه تُجمع في خزانات ثم توزع عبر شبكات إلى النوافير والمباني والحمامات."},
+ "Road Engineering":{kicker:"ENGINEERING",meta:["VIA","INFRASTRUCTURE"],text:"كانت بعض الطرق تتكون من طبقات من مواد مختلفة، مع سطح حجري في الطرق المهمة. التصميم كان يراعي تصريف المياه وحركة العربات والمشاة."},
+ Sewers:{kicker:"ENGINEERING",meta:["DRAINAGE","CITIES"],text:"من أشهر أنظمة الصرف Cloaca Maxima في روما، التي بدأت كمنشأة لتصريف المياه وتطورت ضمن شبكة الصرف الحضري."},
+ Coins:{kicker:"ARCHIVE",meta:["NUMISMATICS","ECONOMY"],text:"العملات مصدر تاريخي غني، فهي تحمل أسماء وصور الأباطرة ورسائل سياسية ورموزًا دينية، وتساعد في دراسة الاقتصاد والدعاية الرسمية."},
+ Ports:{kicker:"COMMERCE",meta:["OSTIA","MEDITERRANEAN"],text:"كانت الموانئ نقاطًا حاسمة في شبكة الإمداد. ميناء أوستيا وموانئ الأحواض المجاورة ساعدت في وصول الحبوب والبضائع إلى روما."},
+ Agriculture:{kicker:"ECONOMY",meta:["FARMS","GRAIN"],text:"ظلت الزراعة أساس الاقتصاد، وتفاوتت أنماط الملكية والعمل بين الأقاليم والفترات، مع أهمية كبيرة للحبوب والزيتون والكروم."},
+ "Trade Routes":{kicker:"COMMERCE",meta:["LAND","SEA"],text:"تحركت السلع عبر طرق برية وبحرية تربط المقاطعات بالمراكز الحضرية. شملت التجارة الزيت والنبيذ والحبوب والمعادن والمنسوجات والسلع الفاخرة."},
+ "Pompeii Explorer":{kicker:"POMPEII",meta:["79 AD","CITY"],text:"يمكن قراءة بومبي كأرشيف حضري: الشوارع والمنازل والمخابز والحمامات والكتابات والرسومات تكشف تفاصيل لا تظهر عادة في النصوص السياسية."}
+ };
+
+ const timelineData={
+ foundation:{year:"753 BC",title:"Foundation of Rome",text:"التاريخ التقليدي لتأسيس روما على يد رومولوس. خلف الرواية الأسطورية تطورت تجمعات متعددة حول تلال نهر التيبر قبل تشكل المدينة.",tags:["ROMULUS","TIBER","LATIUM"]},
+ republic:{year:"509 BC",title:"Roman Republic",text:"التاريخ التقليدي لبداية الجمهورية بعد نهاية الملكية. تطورت مؤسسات مثل مجلس الشيوخ والمجالس الشعبية، بينما توسعت روما تدريجيًا في إيطاليا.",tags:["SENATE","REPUBLIC","ITALY"]},
+ punic:{year:"264 BC",title:"Punic Wars",text:"بدأ الصراع بين روما وقرطاج على صقلية ثم تحول إلى سلسلة من الحروب التي انتهت بهيمنة روما على أجزاء واسعة من غرب المتوسط.",tags:["CARTHAGE","HANNIBAL","MEDITERRANEAN"]},
+ caesar:{year:"49 BC",title:"Caesar Crosses the Rubicon",text:"عبور قيصر نهر الروبيكون بجيشه مثّل بداية حرب أهلية كبرى. انتصاره غيّر بنية السلطة في الجمهورية ومهد الطريق لصعود أوكتافيان.",tags:["CAESAR","RUBICON","CIVIL WAR"]},
+ augustus:{year:"27 BC",title:"Augustus & the Empire",text:"حصل أوكتافيان على لقب أغسطس ودخل النظام السياسي الروماني مرحلة جديدة. ظلّت المؤسسات الجمهورية قائمة شكليًا، لكن مركز القوة أصبح حول الإمبراطور.",tags:["AUGUSTUS","PRINCIPATE","PAX ROMANA"]},
+ trajan:{year:"117 AD",title:"Maximum Extent",text:"في نهاية عهد ترايان وصلت الأراضي الخاضعة للإمبراطورية إلى أقصى اتساع جغرافي تقليديًا، من بريطانيا إلى مناطق واسعة من الشرق الأدنى.",tags:["TRAJAN","DACIA","EXPANSION"]},
+ crisis:{year:"235 AD",title:"Crisis of the Third Century",text:"شهد القرن الثالث اضطرابات متكررة، وانقسامات سياسية، وضغوطًا عسكرية، ومشاكل اقتصادية ونقدية. جاءت إصلاحات دقلديانوس لاحقًا لإعادة تنظيم الدولة.",tags:["CRISIS","ARMY","DIocletian".toUpperCase()]},
+ division:{year:"395 AD",title:"Permanent Administrative Division",text:"بعد وفاة ثيودوسيوس الأول أصبح تقسيم إدارة الإمبراطورية بين أبنائه واقعًا سياسيًا دائمًا بدرجة أكبر، مع استمرار فكرة الإمبراطورية الرومانية الواحدة.",tags:["EAST","WEST","THEODOSIUS"]},
+ fall:{year:"476 AD",title:"Fall of the Western Empire",text:"عزل رومولوس أوغستولوس أصبح التاريخ التقليدي لنهاية الإمبراطورية الرومانية الغربية. لم يكن ذلك نهاية العالم الروماني، فقد استمرت الإمبراطورية الشرقية قرونًا.",tags:["476","WEST","EASTERN EMPIRE"]}
+ };
+
+ const regionData={
+ Italia:["ITALIA","قلب الدولة الرومانية السياسي وموقع روما. كانت شبكة الطرق والموانئ والمدن الإيطالية أساسًا مهمًا للإدارة والجيش والاقتصاد."],
+ Gaul:["GAUL","منطقة واسعة في غرب أوروبا ضمت مقاطعات متعددة. أصبحت جزءًا مهمًا من الاقتصاد والجيش الروماني بعد حروب قيصر."],
+ Hispania:["HISPANIA","شبه الجزيرة الإيبيرية أصبحت مجموعة مقاطعات رومانية غنية بالمعادن والزراعة والمدن والطرق."],
+ Britannia:["BRITANNIA","احتلت روما أجزاء كبيرة من بريطانيا منذ غزو 43 ميلادية تقريبًا، وظلت الحدود الشمالية موضع ضغط وصراع."],
+ Egypt:["AEGYPTUS","أصبحت مصر مقاطعة رومانية بعد وفاة كليوباترا ومارك أنطونيوس، وكانت الحبوب والثروة الزراعية عنصرًا استراتيجيًا مهمًا."],
+ "North Africa":["NORTH AFRICA","كانت شمال أفريقيا من أهم مناطق إنتاج الحبوب والزيت، وضمّت مدنًا مزدهرة وموانئ مهمة."],
+ Greece:["GRAECIA","كان للمدن اليونانية تأثير ثقافي هائل في العالم الروماني، خاصة في الفلسفة والتعليم والفنون والعمارة."],
+ Syria:["SYRIA","منطقة حدودية وتجارية مهمة قرب القوى الشرقية، واحتوت مدنًا كبرى مثل أنطاكية."],
+ Dacia:["DACIA","ضمتها روما في عهد ترايان بعد حروب داقية، ثم تخلت عن المقاطعة في عهد أوريليان في القرن الثالث."]
+ };
+
+ const mapYearText={
+ "27 BC":"مرحلة بداية الإمبراطورية في عهد أغسطس؛ ما زالت التوسعات الكبرى اللاحقة أمام روما.",
+ "117 AD":"نهاية عهد ترايان؛ تمثل هذه المرحلة أقصى اتساع جغرافي تقليديًا.",
+ "200 AD":"إمبراطورية واسعة ومستقرة نسبيًا رغم استمرار الضغوط على بعض الحدود.",
+ "300 AD":"عصر إصلاحات وأزمات وانقسامات إدارية وعسكرية متزايدة.",
+ "400 AD":"إمبراطورية أكثر انقسامًا إداريًا، مع تغيرات كبيرة في الغرب والحدود."
+ };
+
+ function openModal(key){
+ const data=modalData[key];
+ if(!data) return;
+ $("#modalKicker").textContent=data.kicker;
+ $("#modalTitle").textContent=key.toUpperCase();
+ $("#modalMeta").innerHTML=data.meta.map(x=>'<span class="tag">'+escapeHTML(x)+'</span>').join("");
+ $("#modalText").textContent=data.text;
+ $("#modal").classList.add("open");
+ document.body.style.overflow="hidden";
+ $("#modalClose").focus();
+ }
+ function closeModal(){
+ $("#modal").classList.remove("open");
+ document.body.style.overflow="";
+ }
+ function escapeHTML(str){
+ return String(str).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+ }
+
+ $$(".card[data-modal],.god[data-modal],.arch-card[data-modal],button[data-modal]").forEach(el=>{
+ el.addEventListener("click",()=>openModal(el.dataset.modal));
+ });
+ $("#modalClose").addEventListener("click",closeModal);
+ $("#modal").addEventListener("click",e=>{if(e.target===$("#modal"))closeModal()});
+ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+
+ $$(".timeline-nav button").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+ $$(".timeline-nav button").forEach(b=>b.classList.remove("active"));
+ btn.classList.add("active");
+ const d=timelineData[btn.dataset.time];
+ $("#timeYear").textContent=d.year;
+ $("#timeTitle").textContent=d.title;
+ $("#timeText").textContent=d.text;
+ $("#timeTags").innerHTML=d.tags.map(x=>'<span class="tag">'+escapeHTML(x)+'</span>').join("");
+ $("#timeSymbol").textContent=d.year.replace(" AD","").replace(" BC","");
+ });
+ });
+
+ $$(".region").forEach(region=>{
+ region.addEventListener("click",()=>{
+ $$(".region").forEach(r=>r.classList.remove("selected"));
+ region.classList.add("selected");
+ const d=regionData[region.dataset.region];
+ $("#regionTitle").textContent=d[0];
+ $("#regionText").textContent=d[1];
+ });
+ });
+
+ $$(".map-toolbar button").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+ $$(".map-toolbar button").forEach(b=>b.classList.remove("active"));
+ btn.classList.add("active");
+ const year=btn.dataset.mapyear;
+ $("#regionText").textContent=mapYearText[year]+" اختر منطقة على الخريطة لاستكشافها.";
+ $("#regionTitle").textContent=year;
+ const opacity={"27 BC":.52,"117 AD":.88,"200 AD":.82,"300 AD":.67,"400 AD":.5}[year]||.7;
+ $("#mapLand").style.opacity=opacity;
+ });
+ });
+
+ $$(".equipment button").forEach(btn=>{
+ btn.addEventListener("click",()=>openModal(btn.dataset.equipment.charAt(0).toUpperCase()+btn.dataset.equipment.slice(1)));
+ });
+
+ const archiveItems=$$(".explorer-item");
+ let activeFilter="all";
+ function filterArchive(){
+ const q=$("#archiveSearch").value.trim().toLowerCase();
+ let count=0;
+ archiveItems.forEach(item=>{
+ const matchFilter=activeFilter==="all"||item.dataset.type===activeFilter;
+ const matchSearch=!q||item.dataset.search.toLowerCase().includes(q);
+ item.style.display=matchFilter&&matchSearch?"block":"none";
+ if(matchFilter&&matchSearch)count++;
+ });
+ $("#emptyArchive").style.display=count?"none":"block";
+ }
+ $("#archiveSearch").addEventListener("input",filterArchive);
+ $$(".filter").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+ $$(".filter").forEach(b=>b.classList.remove("active"));
+ btn.classList.add("active");
+ activeFilter=btn.dataset.filter;
+ filterArchive();
+ });
+ });
+
+ const globalData=[
+ ["Augustus","Emperor","أول إمبراطور في النظام الإمبراطوري الجديد."],
+ ["Julius Caesar","Person","قائد وسياسي لعب دورًا حاسمًا في نهاية الجمهورية."],
+ ["Colosseum","Building","مدرج فلافي شهير في قلب روما."],
+ ["Pompeii","City","مدينة حفظها ثوران فيزوف سنة 79 ميلادية."],
+ ["Egypt","Region","مقاطعة استراتيجية ومصدر مهم للحبوب."],
+ ["Trajan","Emperor","إمبراطور ارتبط بأقصى اتساع للإمبراطورية."],
+ ["Mars","God","إله الحرب وحامي روما في جوانب من التقليد الروماني."],
+ ["Punic Wars","War","صراعات روما الكبرى مع قرطاج."],
+ ["Pantheon","Building","مبنى ذو قبة خرسانية شهيرة."],
+ ["Roman Roads","Engineering","شبكة بنية تحتية ربطت أنحاء الإمبراطورية."]
+ ];
+ function renderGlobal(){
+ const q=$("#globalSearch").value.trim().toLowerCase();
+ const data=globalData.filter(x=>!q||x.join(" ").toLowerCase().includes(q));
+ $("#globalResults").innerHTML=data.map((x,i)=>'<article class="card explorer-item reveal visible"><span class="card-number">'+escapeHTML(x[1])+' · '+String(i+1).padStart(2,"0")+'</span><h3>'+escapeHTML(x[0])+'</h3><p>'+escapeHTML(x[2])+'</p></article>').join("");
+ }
+ $("#globalSearch").addEventListener("input",renderGlobal);
+ renderGlobal();
+
+ function roman(n){
+ n=parseInt(n,10);
+ if(!Number.isInteger(n)||n<1||n>3999)return null;
+ const vals=[[1000,"M"],[900,"CM"],[500,"D"],[400,"CD"],[100,"C"],[90,"XC"],[50,"L"],[40,"XL"],[10,"X"],[9,"IX"],[5,"V"],[4,"IV"],[1,"I"]];
+ let out="";
+ for(const [v,s] of vals){while(n>=v){out+=s;n-=v}}
+ return out;
+ }
+ function convert(){
+ const n=Number($("#numberInput").value);
+ const r=roman(n);
+ $("#numeralResult").textContent=r||"1 — 3999";
+ }
+ $("#convertBtn").addEventListener("click",convert);
+ $("#numberInput").addEventListener("keydown",e=>{if(e.key==="Enter")convert()});
+
+ $("#themeBtn").addEventListener("click",()=>{
+ document.body.classList.toggle("light");
+ const light=document.body.classList.contains("light");
+ $("#themeBtn").textContent=light?"☾":"☼";
+ localStorage.setItem("rome-theme",light?"light":"dark");
+ });
+ try{
+ if(localStorage.getItem("rome-theme")==="light"){
+ document.body.classList.add("light");
+ $("#themeBtn").textContent="☾";
+ }
+ }catch(e){}
+
+ function openMenu(){
+ $("#megaMenu").classList.add("open");
+ $("#megaMenu").setAttribute("aria-hidden","false");
+ document.body.style.overflow="hidden";
+ $("#megaClose").focus();
+ }
+ function closeMenu(){
+ $("#megaMenu").classList.remove("open");
+ $("#megaMenu").setAttribute("aria-hidden","true");
+ document.body.style.overflow="";
+ }
+ $("#menuBtn").addEventListener("click",openMenu);
+ $("#megaClose").addEventListener("click",closeMenu);
+ $$("#megaMenu a").forEach(a=>a.addEventListener("click",closeMenu));
+
+ function showToast(text){
+ const t=$("#toast");
+ t.textContent=text;t.classList.add("show");
+ clearTimeout(showToast.timer);
+ showToast.timer=setTimeout(()=>t.classList.remove("show"),2200);
+ }
+
+ $$(".btn").forEach(btn=>{
+ if(btn.textContent.includes("ENTER ROME")){
+ btn.addEventListener("click",()=>showToast("Welcome to Roma — بدأت الرحلة."));
+ }
+ });
+
+ const observer=new IntersectionObserver(entries=>{
+ entries.forEach(entry=>{
+ if(entry.isIntersecting){
+ entry.target.classList.add("visible");
+ observer.unobserve(entry.target);
+ }
+ });
+ },{threshold:.12});
+ $$(".reveal").forEach(el=>observer.observe(el));
+
+ let ticking=false;
+ function updateScroll(){
+ const scrollTop=window.scrollY;
+ const max=document.documentElement.scrollHeight-window.innerHeight;
+ $("#progress").style.width=(max>0?(scrollTop/max)*100:0)+"%";
+ $("#header").classList.toggle("scrolled",scrollTop>50);
+ $$(".parallax").forEach(el=>{
+ const speed=Number(el.dataset.speed||.03);
+ el.style.transform="translate3d(0,"+(scrollTop*speed)+"px,0)";
+ });
+ ticking=false;
+ }
+ window.addEventListener("scroll",()=>{
+ if(!ticking){requestAnimationFrame(updateScroll);ticking=true}
+ },{passive:true});
+
+ const preloader=$("#preloader");
+ window.addEventListener("load",()=>{
+ setTimeout(()=>preloader.classList.add("done"),650);
+ });
+
+ window.addEventListener("error",e=>{
+ if(e.message) showToast("تعذر تحميل عنصر ثانوي؛ بقية التجربة تعمل.");
+ });
+
+ const interactive=$$("button,a,input");
+ interactive.forEach(el=>{
+ el.addEventListener("pointerenter",()=>{
+ if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+ el.style.setProperty("--hover-x","0px");
+ });
+ });
+
+ // دعم اتجاه LTR للنصوص اللاتينية الطويلة داخل الحقول دون التأثير على واجهة RTL.
+ document.documentElement.lang="ar";
+})();
+</script>
+</body>
+</html>
